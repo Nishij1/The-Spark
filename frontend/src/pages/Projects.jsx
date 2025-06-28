@@ -99,7 +99,49 @@ const Projects = () => {
     setShowDetailsModal(true);
   };
 
-  const handleStartProject = (project) => {
+  const handleStartProject = async (project) => {
+    try {
+      // Validate project data
+      if (!project) {
+        showError('Project data is missing');
+        return;
+      }
+
+      if (!project.id) {
+        showError('Project ID is missing. Cannot start project.');
+        return;
+      }
+
+      // Show loading state
+      showSuccess('Starting project...');
+
+      // Update project status to in-progress if it's not already started
+      if (project.status === 'active' && (!project.progress || project.progress.status === 'not_started')) {
+        try {
+          await updateProject(project.id, {
+            status: 'in-progress',
+            'progress.status': 'in_progress',
+            'progress.startedAt': new Date(),
+            'progress.lastWorkedOn': new Date(),
+          });
+        } catch (updateError) {
+          // If update fails, still allow navigation but show warning
+          console.warn('Failed to update project status:', updateError);
+          showError('Project status update failed, but continuing...');
+        }
+      }
+
+      // Navigate to project execution page
+      navigate(`/project/${project.id}`);
+
+    } catch (error) {
+      console.error('Error starting project:', error);
+      showError('Failed to start project: ' + (error.message || 'Unknown error'));
+    }
+  };
+
+  const handleNavigateToProject = (project) => {
+    // Navigate directly to project execution page when clicking on the card
     navigate(`/project/${project.id}`);
   };
 
@@ -270,6 +312,7 @@ const Projects = () => {
                   onDelete={handleDeleteProject}
                   onView={handleViewProject}
                   onStart={handleStartProject}
+                  onNavigate={handleNavigateToProject}
                 />
               </motion.div>
             ))}

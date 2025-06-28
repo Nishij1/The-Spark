@@ -186,7 +186,7 @@ const Profile = () => {
                         className="input-field"
                       />
                     ) : (
-                      <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <User className="h-4 w-4 text-gray-400" />
                         <span className="text-gray-900 dark:text-white">{formData.name}</span>
                       </div>
@@ -206,7 +206,7 @@ const Profile = () => {
                         className="input-field"
                       />
                     ) : (
-                      <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <Mail className="h-4 w-4 text-gray-400" />
                         <span className="text-gray-900 dark:text-white">{formData.email}</span>
                       </div>
@@ -228,7 +228,7 @@ const Profile = () => {
                       className="input-field"
                     />
                   ) : (
-                    <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <BookOpen className="h-4 w-4 text-gray-400" />
                       <span className="text-gray-900 dark:text-white">{formData.background}</span>
                     </div>
@@ -253,7 +253,7 @@ const Profile = () => {
                       ))}
                     </select>
                   ) : (
-                    <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <div className="flex items-center space-x-2 mb-1">
                         <Award className="h-4 w-4 text-yellow-500" />
                         <span className="font-medium text-gray-900 dark:text-white capitalize">
@@ -281,7 +281,7 @@ const Profile = () => {
                       className="input-field resize-none"
                     />
                   ) : (
-                    <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <span className="text-gray-900 dark:text-white">
                         {formData.bio || 'No bio added yet.'}
                       </span>

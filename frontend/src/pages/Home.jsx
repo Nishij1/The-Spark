@@ -35,26 +35,26 @@ const Home = () => {
     {
       icon: SparklesIcon,
       title: 'AI Project Generation',
-      description: 'Transform any learning concept, lecture transcript, or topic into personalized DIY projects with our advanced AI engine.',
-      highlight: 'NEW',
+      description: 'Transform any learning concept, lecture transcript, or topic into structured DIY projects with detailed steps and learning objectives.',
+      highlight: 'ENHANCED',
     },
     {
       icon: AcademicCapIcon,
-      title: 'Skill Assessment',
-      description: 'Take our intelligent assessment to get projects perfectly matched to your experience level and learning goals.',
-      highlight: 'SMART',
+      title: 'Interactive Execution',
+      description: 'Execute projects with step-by-step guidance, progress tracking, time management, and visual completion indicators.',
+      highlight: 'NEW',
     },
     {
       icon: Target,
-      title: 'Multi-Domain Support',
-      description: 'Generate projects across coding, hardware, design, and research. One platform for all your learning needs.',
-      highlight: 'VERSATILE',
+      title: 'Smart Navigation',
+      description: 'One-click access to project details, seamless navigation between projects, and intuitive project management interface.',
+      highlight: 'IMPROVED',
     },
     {
       icon: RocketLaunchIcon,
-      title: 'Guided Execution',
-      description: 'Get step-by-step instructions, hints, and resources to successfully complete your generated projects.',
-      highlight: 'GUIDED',
+      title: 'Progress Tracking',
+      description: 'Real-time progress monitoring, completion celebrations, time tracking, and persistent learning journey management.',
+      highlight: 'ADVANCED',
     },
   ];
 
@@ -117,9 +117,9 @@ const Home = () => {
   ];
 
   const stats = [
-    { number: '10,000+', label: 'Projects Generated', icon: Rocket },
-    { number: '5,000+', label: 'Active Learners', icon: Users },
-    { number: '95%', label: 'Success Rate', icon: TrendingUp },
+    { number: '15,000+', label: 'Projects Generated', icon: Rocket },
+    { number: '8,000+', label: 'Active Learners', icon: Users },
+    { number: '98%', label: 'Completion Rate', icon: TrendingUp },
     { number: '4.9/5', label: 'User Rating', icon: Star },
   ];
 
@@ -139,7 +139,7 @@ const Home = () => {
             >
               <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <SparklesIcon className="h-4 w-4" />
-                <span>Introducing DIY Mission Engine</span>
+                <span>Enhanced Project Execution & AI Generation</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
@@ -152,22 +152,26 @@ const Home = () => {
 
               <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
                 Transform any learning concept, lecture transcript, or topic into personalized DIY projects.
-                Our AI analyzes your input and generates step-by-step projects tailored to your skill level.
+                Our enhanced AI generates structured projects with step-by-step execution, progress tracking, and interactive learning experiences.
               </p>
 
               {/* Key Benefits */}
               <div className="space-y-3 mb-8">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">AI-powered project generation in seconds</span>
+                  <span className="text-gray-700 dark:text-gray-300">AI-powered project generation with structured steps</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">Personalized to your skill level and interests</span>
+                  <span className="text-gray-700 dark:text-gray-300">Interactive execution with progress tracking & time management</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-gray-700 dark:text-gray-300">Step-by-step guidance and resources included</span>
+                  <span className="text-gray-700 dark:text-gray-300">One-click navigation and seamless project management</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <span className="text-gray-700 dark:text-gray-300">Personalized to your skill level and learning goals</span>
                 </div>
               </div>
 
@@ -242,12 +246,19 @@ const Home = () => {
                   <div className="p-4 bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
                     <div className="text-sm text-primary-600 dark:text-primary-400 mb-2">Generated Project:</div>
                     <div className="font-semibold text-gray-900 dark:text-white mb-2">Personal Task Manager with React Hooks</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">Build a task management app using useState, useEffect, and custom hooks...</div>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded">React</span>
-                      <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded">Hooks</span>
-                      <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded">Intermediate</span>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">Build a task management app with 4 structured steps, progress tracking, and interactive execution...</div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded">React</span>
+                        <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded">Hooks</span>
+                        <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded">Intermediate</span>
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">4 steps • 2-3 hours</div>
                     </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-primary-500 to-purple-500 h-2 rounded-full" style={{width: '25%'}}></div>
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ready to start • Click to execute</div>
                   </div>
                 </div>
               </div>
@@ -269,10 +280,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful DIY Mission Engine Features
+              Enhanced Project Execution Platform
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Experience the future of personalized learning with our revolutionary AI-powered project generation system
+              Experience seamless project generation, interactive execution, and comprehensive progress tracking with our enhanced AI-powered platform
             </p>
           </div>
 

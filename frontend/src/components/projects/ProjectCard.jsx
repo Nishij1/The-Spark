@@ -28,8 +28,9 @@ const getDomainIcon = (domain) => {
   }
 };
 
-export default function ProjectCard({ project, onEdit, onDelete, onView, onStart }) {
+export default function ProjectCard({ project, onEdit, onDelete, onView, onStart, onNavigate }) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this project?')) {
@@ -41,6 +42,42 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       } finally {
         setIsDeleting(false);
       }
+    }
+  };
+
+  const handleStartProject = async () => {
+    if (!onStart) return;
+
+    // Validate project data
+    if (!project) {
+      console.error('Project data is missing');
+      return;
+    }
+
+    if (!project.id) {
+      console.error('Project ID is missing');
+      return;
+    }
+
+    setIsStarting(true);
+    try {
+      await onStart(project);
+    } catch (error) {
+      console.error('Failed to start project:', error);
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
+  const handleCardClick = (e) => {
+    // Don't navigate if clicking on buttons or interactive elements
+    if (e.target.closest('button') || e.target.closest('[role="button"]') || e.target.closest('.menu-button')) {
+      return;
+    }
+
+    // Navigate to project execution page
+    if (onNavigate) {
+      onNavigate(project);
     }
   };
 
@@ -73,7 +110,8 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      className="card hover:shadow-xl transition-all duration-200"
+      onClick={handleCardClick}
+      className="card hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 cursor-pointer group"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
@@ -81,7 +119,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
             {getDomainIcon(project.domain)}
           </span>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
               {project.title || project.name}
             </h3>
             <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
@@ -91,7 +129,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
         </div>
 
         <Menu as="div" className="relative">
-          <Menu.Button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <Menu.Button className="menu-button p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <EllipsisVerticalIcon className="h-5 w-5" />
           </Menu.Button>
 
@@ -284,15 +322,32 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
         </div>
       )}
 
-      {/* Start Project Button */}
+      {/* Click to view indicator */}
+      <div className="mt-3 text-center">
+        <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-200">
+          Click anywhere to view project details
+        </span>
+      </div>
+
+      {/* Enhanced Start Project Button */}
       {onStart && (
         <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
-            onClick={() => onStart(project)}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+            onClick={handleStartProject}
+            disabled={isStarting || isDeleting}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:shadow-md"
           >
-            <PlayCircleIcon className="h-4 w-4" />
-            <span>Start Project</span>
+            {isStarting ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Starting...</span>
+              </>
+            ) : (
+              <>
+                <PlayCircleIcon className="h-4 w-4" />
+                <span>Start Project</span>
+              </>
+            )}
           </button>
         </div>
       )}
