@@ -325,7 +325,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       {/* Click to view indicator */}
       <div className="mt-3 text-center">
         <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-200">
-          Click anywhere to view project details
+          Double click anywhere to start project 
         </span>
       </div>
 

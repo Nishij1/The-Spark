@@ -535,24 +535,18 @@ const Dashboard = () => {
                 >
                   {aiLoading ? (
                     <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white "></div>
                       Generating...
                     </div>
                   ) : (
-                    <>
-                      <Plus className="h-5 w-5 mr-2" />
-                      Generate Project Ideas
-                    </>
+                    <div className='mt-2 '>
+                      Generate Project Idea
+                    </div>
                   )}
                 </button>
 
-                {/* Debug button - remove in production */}
-                <button
-                  onClick={handleTestProjectQuery}
-                  className="w-full btn-secondary text-sm"
-                >
-                  🧪 Test Project Query (Debug)
-                </button>
+
+          
               </div>
             </div>
           </motion.div>
