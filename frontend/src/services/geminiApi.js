@@ -169,7 +169,7 @@ class GeminiApiService {
       const projectData = JSON.parse(cleanedText);
       
       // Add metadata
-      projectData.id = `generated_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      projectData.type = 'generated';
       projectData.isGenerated = true;
       projectData.generatedAt = new Date();
       projectData.inputSource = input;

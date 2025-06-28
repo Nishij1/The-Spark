@@ -509,12 +509,24 @@ const ProjectExecution = () => {
                     What You'll Learn
                   </h3>
                   <ul className="space-y-2">
-                    {project.learningObjectives.slice(0, 3).map((objective, index) => (
-                      <li key={index} className="flex items-start space-x-2">
-                        <span className="text-green-500 mt-1">✓</span>
-                        <span className="text-gray-700 dark:text-gray-300">{objective}</span>
-                      </li>
-                    ))}
+                    {project.learningObjectives.slice(0, 3).map((objective, index) => {
+                      // Handle different objective formats safely
+                      let objectiveText = '';
+                      if (typeof objective === 'string') {
+                        objectiveText = objective;
+                      } else if (objective && typeof objective === 'object' && objective.objective) {
+                        objectiveText = objective.objective;
+                      } else {
+                        objectiveText = 'Learn new concepts';
+                      }
+
+                      return (
+                        <li key={index} className="flex items-start space-x-2">
+                          <span className="text-green-500 mt-1">✓</span>
+                          <span className="text-gray-700 dark:text-gray-300">{objectiveText}</span>
+                        </li>
+                      );
+                    })}
                     {project.learningObjectives.length > 3 && (
                       <li className="text-gray-500 dark:text-gray-400 text-sm">
                         +{project.learningObjectives.length - 3} more objectives
@@ -534,6 +546,9 @@ const ProjectExecution = () => {
                   inputSource={project.originalInput || project.description}
                   completedSteps={completedSteps}
                   onStepCompletion={handleStepCompletion}
+                  projectId={project.id}
+                  projectDifficulty={project.difficulty || 5}
+                  projectDomain={project.domain || 'coding'}
                 />
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 text-center">
