@@ -125,7 +125,7 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
             className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden"
           >
             {/* Header with Gradient */}
-            <div className="relative bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 px-8 py-6">
+            <div className="relative bg-gradient-to-br from-purple-600  to-purple-100 px-8 py-6">
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="relative flex items-start justify-between">
                 <div className="flex-1">
@@ -198,7 +198,7 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
                   className="space-y-3"
                 >
                   <div className="flex items-center space-x-2">
-                    <DocumentTextIcon className="h-5 w-5 text-primary-500" />
+                    <DocumentTextIcon className="h-5 w-5 text-purple-500" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       Description
                     </h3>
@@ -220,7 +220,7 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
                   className="space-y-3"
                 >
                   <div className="flex items-center space-x-2">
-                    <TagIcon className="h-5 w-5 text-primary-500" />
+                    <TagIcon className="h-5 w-5 text-purple-500" />
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       Tags
                     </h3>
@@ -251,15 +251,15 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
                 {/* Created Date */}
                 <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200 dark:border-blue-700">
                   <div className="flex items-center space-x-3 mb-2">
-                    <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-xl">
-                      <CalendarIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <div className="p-2 bg-blue-100 dark:bg-purple-800 rounded-xl">
+                      <CalendarIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">Created</h4>
-                      <p className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+                      <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300">Created</h4>
+                      <p className="text-lg font-semibold text-purple-900 dark:tepurple-100">
                         {getRelativeTime(project.createdAt)}
                       </p>
-                      <p className="text-xs text-blue-600 dark:text-blue-400">
+                      <p className="text-xs text-purple-600 dark:text-purple-400">
                         {formatDate(project.createdAt)}
                       </p>
                     </div>
@@ -313,7 +313,7 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
                       onEdit(project);
                       onClose();
                     }}
-                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     <PencilSquareIcon className="h-5 w-5" />
                     <span>Edit Project</span>
@@ -331,7 +331,7 @@ export default function ProjectDetailsModal({ isOpen, onClose, project, onEdit, 
                       navigator.clipboard.writeText(`${project.name}: ${project.description}`);
                     });
                   }}
-                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   <ShareIcon className="h-5 w-5" />
                   <span>Share</span>

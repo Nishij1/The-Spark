@@ -152,7 +152,7 @@ const Generate = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <CogIcon className="h-12 w-12 text-primary-500 animate-spin mx-auto mb-4" />
+          <CogIcon className="h-12 w-12 text-purple-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-400">Loading your profile...</p>
         </div>
       </div>
@@ -169,7 +169,7 @@ const Generate = () => {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center mb-6">
-            <div className="p-4 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl">
+            <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-100 rounded-2xl">
               <SparklesIcon className="h-12 w-12 text-white" />
             </div>
           </div>
@@ -194,7 +194,7 @@ const Generate = () => {
             {hasCompletedAssessment ? (
               <button
                 onClick={() => setShowGeneratorModal(true)}
-                className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
                 <SparklesIcon className="h-6 w-6" />
                 <span>Generate AI Project</span>
@@ -202,7 +202,7 @@ const Generate = () => {
             ) : (
               <button
                 onClick={() => setShowAssessmentModal(true)}
-                className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
                 <AcademicCapIcon className="h-6 w-6" />
                 <span>Start with Skill Assessment</span>
@@ -222,7 +222,7 @@ const Generate = () => {
 
           {skillLevel && (
             <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-              Current skill level: <span className="font-medium text-primary-600 dark:text-primary-400 capitalize">{skillLevel}</span>
+              Current skill level: <span className="font-medium text-purple-600 dark:text-purple-400 capitalize">{skillLevel}</span>
             </div>
           )}
         </motion.div>
@@ -288,7 +288,7 @@ const Generate = () => {
                   <div className="flex items-start space-x-4">
                     <div className="text-3xl">{option.icon}</div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                         {option.title}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400 mb-2">
@@ -298,7 +298,7 @@ const Generate = () => {
                         {option.example}
                       </p>
                     </div>
-                    <PlusIcon className="h-5 w-5 text-gray-400 group-hover:text-primary-500 transition-colors" />
+                    <PlusIcon className="h-5 w-5 text-gray-400 group-hover:text-purple-500 transition-colors" />
                   </div>
                 </motion.button>
               ))}
@@ -320,7 +320,7 @@ const Generate = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-4">
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">1</span>
+                <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">1</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Share Your Learning
@@ -332,7 +332,7 @@ const Generate = () => {
             
             <div className="space-y-4">
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">2</span>
+                <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">2</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 AI Generates Projects
@@ -344,7 +344,7 @@ const Generate = () => {
             
             <div className="space-y-4">
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">3</span>
+                <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">3</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Build & Learn

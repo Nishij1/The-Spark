@@ -142,7 +142,7 @@ const Home = () => {
                 <span>Enhanced Project Execution & AI Generation</span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              <h1 className="text-4xl md:text-5xl lg:tl font-bold text-gray-900 dark:text-white mb-6">
                 Never Wonder{' '}
                 <span className="bg-gradient-to-r from-violet-800 to-violet-800 bg-clip-text text-transparent">
                   "What Should I Build?"

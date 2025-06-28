@@ -23,7 +23,7 @@ export default function Signup() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold text-spark-600 dark:text-spark-400 mb-2">
+          <h1 className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">
             Project Spark
           </h1>
           <p className="text-gray-600 dark:text-gray-400">

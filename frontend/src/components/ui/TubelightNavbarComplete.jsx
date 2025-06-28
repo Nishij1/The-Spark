@@ -90,7 +90,7 @@ const TubelightNavbarComplete = ({ className }) => {
                 >
                   <Zap className="h-6 w-6 text-white" />
                 </motion.div>
-                 <span className="text-xl font-bold bg-gradient-to-r  from-violet-800 to-violet-800  bg-clip-text text-transparent">
+                 <span className="text-xl font-bold bg-gradient-to-r  from-violet-600 to-violet-600  bg-clip-text text-transparent">
                   Project Spark
                 </span>
               </Link>
@@ -168,7 +168,7 @@ const TubelightNavbarComplete = ({ className }) => {
                 ) : (
                   <Link
                     to="/login"
-                    className="flex items-center space-x-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors duration-200"
+                    className="flex items-center space-x-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors duration-200"
                   >
                     <LogIn className="h-4 w-4" />
                     <span>Login</span>

@@ -151,8 +151,8 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
                   </button>
                 </div>
 
-                <div className="mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                <div className="mb-6 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                  <p className="text-sm text-purple-700 dark:text-purple-300">
                     ✨ Your project will be created with structured learning steps, objectives, and resources to guide your learning journey.
                   </p>
                 </div>
