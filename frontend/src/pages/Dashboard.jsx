@@ -279,7 +279,7 @@ const Dashboard = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 rounded-3xl p-8 text-white">
+          <div className="relative overflow-hidden bg-gradient-to-br from-violet-800 to-zinc-50 rounded-3xl p-8 text-white">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative">
               <div className="flex items-center justify-between">

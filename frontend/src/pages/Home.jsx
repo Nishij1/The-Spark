@@ -126,7 +126,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-spark-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-20 lg:py-32">
+      <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -137,14 +137,14 @@ const Home = () => {
               transition={{ duration: 0.6 }}
               className="text-left lg:text-left"
             >
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 text-primary-700 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary-100 to-purple-100 dark:from-primary-900/30 dark:to-purple-900/30 text-purple-800 dark:text-purple-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <SparklesIcon className="h-4 w-4" />
                 <span>Enhanced Project Execution & AI Generation</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
                 Never Wonder{' '}
-                <span className="bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-violet-800 to-violet-800 bg-clip-text text-transparent">
                   "What Should I Build?"
                 </span>{' '}
                 Again
@@ -180,7 +180,7 @@ const Home = () => {
                   <>
                     <Link
                       to="/generate"
-                      className="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                      className="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                     >
                       <SparklesIcon className="h-5 w-5" />
                       <span>Generate AI Project</span>
@@ -237,14 +237,14 @@ const Home = () => {
                   </div>
 
                   <div className="flex items-center justify-center py-2">
-                    <div className="flex items-center space-x-2 text-primary-600 dark:text-primary-400">
+                    <div className="flex items-center space-x-2 text-purple-700 dark:text-purple-300">
                       <CogIcon className="h-5 w-5 animate-spin" />
                       <span className="text-sm">AI Processing...</span>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
-                    <div className="text-sm text-primary-600 dark:text-primary-400 mb-2">Generated Project:</div>
+                  <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-50 dark:from-purple-900/20 dark:to-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                    <div className="text-sm text-purple-600 dark:text-purple-200 mb-2">Generated Project:</div>
                     <div className="font-semibold text-gray-900 dark:text-white mb-2">Personal Task Manager with React Hooks</div>
                     <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">Build a task management app with 4 structured steps, progress tracking, and interactive execution...</div>
                     <div className="flex items-center justify-between mb-2">
@@ -256,7 +256,7 @@ const Home = () => {
                       <div className="text-xs text-gray-500 dark:text-gray-400">4 steps • 2-3 hours</div>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-primary-500 to-purple-500 h-2 rounded-full" style={{width: '25%'}}></div>
+                      <div className="bg-gradient-to-r from-purple-200 to-purple-500 h-2 rounded-full" style={{width: '25%'}}></div>
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ready to start • Click to execute</div>
                   </div>
@@ -264,10 +264,10 @@ const Home = () => {
               </div>
 
               {/* Floating elements */}
-              <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+              <div className="absolute -top-4 -right-4 bg-gradient-to-r from-purple-800 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                 ✨ AI Powered
               </div>
-              <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-green-400 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+              <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-800 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                 🚀 Instant Results
               </div>
             </motion.div>
@@ -303,7 +303,7 @@ const Home = () => {
                       {feature.highlight}
                     </div>
                   )}
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary-500 to-purple-500 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-200">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-700 to-purple-300 rounded-xl mb-4 group-hover:scale-110 transition-transform duration-200">
                     <Icon className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -320,7 +320,7 @@ const Home = () => {
       </section>
 
       {/* Domains Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-purple-100 dark:bg-purple-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -425,7 +425,7 @@ const Home = () => {
             {isAuthenticated ? (
               <Link
                 to="/generate"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-300 hover:to-purple-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <SparklesIcon className="h-5 w-5" />
                 <span>Generate Your Own Project</span>
@@ -433,7 +433,7 @@ const Home = () => {
             ) : (
               <Link
                 to="/signup"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-slate-50 hover:from-slate-100 hover:to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <span>Try It Free</span>
                 <ArrowRight className="h-5 w-5" />
@@ -466,7 +466,7 @@ const Home = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary-500 to-purple-500 rounded-xl mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-700 to-slate-50 rounded-xl mb-4">
                     <Icon className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
@@ -483,7 +483,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-purple-600">
+      <section className="py-20 bg-gradient-to-r from-purple-700 to-slate-50">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -503,7 +503,7 @@ const Home = () => {
                 <>
                   <Link
                     to="/generate"
-                    className="inline-flex items-center space-x-2 bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center space-x-2 bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     <SparklesIcon className="h-5 w-5" />
                     <span>Generate AI Project</span>
