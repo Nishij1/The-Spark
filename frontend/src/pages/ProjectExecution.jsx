@@ -120,7 +120,7 @@ const ProjectExecution = () => {
 
   const handleStepCompletion = async (stepIndex, isCompleted) => {
     const newCompleted = new Set(completedSteps);
-    
+
     if (isCompleted) {
       newCompleted.add(stepIndex);
       if (stepIndex === currentStep) {
@@ -132,15 +132,16 @@ const ProjectExecution = () => {
         setCurrentStep(stepIndex);
       }
     }
-    
+
     setCompletedSteps(newCompleted);
-    
+
     // Save progress to database
     try {
       const currentProgress = project.progress || {};
       const newCurrentStep = stepIndex === currentStep && isCompleted ? currentStep + 1 : currentStep;
       const newProgressPercentage = (newCompleted.size / project.steps.length) * 100;
       const newStatus = newCompleted.size === project.steps.length ? 'completed' : 'in_progress';
+      const isProjectCompleted = newCompleted.size === project.steps.length;
 
       const progressUpdate = {
         progress: {
@@ -154,10 +155,23 @@ const ProjectExecution = () => {
         }
       };
 
+      // If project is completed, also update the main project status
+      if (isProjectCompleted) {
+        progressUpdate.status = 'completed';
+        progressUpdate.completedAt = new Date();
+      }
+
       await updateProject(progressUpdate);
 
       if (isCompleted) {
         showSuccess(`Step ${stepIndex + 1} completed! Great progress!`);
+
+        // Show special completion message if project is fully completed
+        if (isProjectCompleted) {
+          setTimeout(() => {
+            showSuccess('🎉 Congratulations! You have completed the entire project! All steps with quizzes are finished.');
+          }, 1000);
+        }
       }
     } catch (error) {
       console.error('Error saving progress:', error);

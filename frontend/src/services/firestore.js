@@ -458,6 +458,7 @@ export const progressService = {
 
       const totalSteps = project.steps?.length || 0;
       const percentComplete = totalSteps > 0 ? (completedSteps.length / totalSteps) * 100 : 0;
+      const isProjectCompleted = completedSteps.length === totalSteps && totalSteps > 0;
 
       const updateData = {
         'progress.currentStep': Math.max(progress.currentStep || 0, stepIndex + 1),
@@ -465,6 +466,7 @@ export const progressService = {
         'progress.percentComplete': percentComplete,
         'progress.timeSpent': (progress.timeSpent || 0) + timeSpent,
         'progress.lastWorkedOn': serverTimestamp(),
+        'progress.status': isProjectCompleted ? 'completed' : 'in_progress',
         updatedAt: serverTimestamp(),
       };
 
@@ -476,9 +478,16 @@ export const progressService = {
         };
       }
 
+      // If project is completed, update main project status
+      if (isProjectCompleted) {
+        updateData.status = 'completed';
+        updateData.completedAt = serverTimestamp();
+        console.log('🎉 Project completed! All steps with quizzes finished.');
+      }
+
       await updateDoc(projectRef, updateData);
 
-      return { completedSteps, percentComplete };
+      return { completedSteps, percentComplete, isProjectCompleted };
     } catch (error) {
       console.error('Error completing step:', error);
       throw error;
@@ -499,6 +508,26 @@ export const progressService = {
       return project.progress || {};
     } catch (error) {
       console.error('Error getting project progress:', error);
+      throw error;
+    }
+  },
+
+  // Mark project as completed
+  async markProjectCompleted(projectId) {
+    try {
+      const projectRef = doc(db, COLLECTIONS.PROJECTS, projectId);
+      const updateData = {
+        status: 'completed',
+        'progress.status': 'completed',
+        completedAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      await updateDoc(projectRef, updateData);
+      console.log('✅ Project marked as completed:', projectId);
+      return true;
+    } catch (error) {
+      console.error('Error marking project as completed:', error);
       throw error;
     }
   },
