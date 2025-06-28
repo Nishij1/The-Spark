@@ -10,6 +10,7 @@ import ProjectExecution from './pages/ProjectExecution';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import QuizDebug from './pages/QuizDebug';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { UserJourneyProvider } from './context/UserJourneyContext';
@@ -74,6 +75,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/quiz-debug"
+                  element={
+                    <ProtectedRoute>
+                      <QuizDebug />
                     </ProtectedRoute>
                   }
                 />

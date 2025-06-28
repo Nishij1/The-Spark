@@ -38,6 +38,24 @@ const Dashboard = () => {
   const [generationError, setGenerationError] = useState(null);
   const [generationSuccess, setGenerationSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState('');
+
+  // Prevent navigation during generation
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isGenerating) {
+        e.preventDefault();
+        e.returnValue = 'Project generation is in progress. Are you sure you want to leave?';
+        return e.returnValue;
+      }
+    };
+
+    if (isGenerating) {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }
+  }, [isGenerating]);
 
   const stats = [
     {
@@ -82,8 +100,10 @@ const Dashboard = () => {
     console.log('Starting project generation...', { input, activeTab, currentUser: currentUser?.uid });
 
     try {
+      setIsGenerating(true);
       setGenerationError(null);
       setGenerationSuccess(false);
+      setGenerationProgress('Initializing project generation...');
 
       // Check if user is authenticated
       if (!currentUser) {
@@ -95,6 +115,7 @@ const Dashboard = () => {
 
       if (hasGeminiKey) {
         console.log('Generating AI-powered project...');
+        setGenerationProgress('Analyzing your input with AI...');
         try {
           // Use the proper API that generates structured projects with steps
           const generatedProject = await geminiApi.generateProject(
@@ -102,6 +123,8 @@ const Dashboard = () => {
             'intermediate', // Default skill level
             'coding' // Default domain
           );
+
+          setGenerationProgress('Creating project structure...');
 
           console.log('Structured project generated:', generatedProject);
 
@@ -118,9 +141,12 @@ const Dashboard = () => {
             generatedAt: new Date(),
           };
 
+          setGenerationProgress('Saving project to database...');
           console.log('Creating project with structured data:', projectData);
           const projectId = await createProject(projectData);
           console.log('Project created successfully with ID:', projectId);
+
+          setGenerationProgress('Project created successfully!');
 
           // Clear the input and show success
           if (activeTab === 'concept') {
@@ -143,6 +169,7 @@ const Dashboard = () => {
 
       // Fallback: Create a manual project with basic structure
       console.log('Creating manual project with basic structure...');
+      setGenerationProgress('Creating basic project structure...');
 
       const fallbackProjectData = {
         title: `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
@@ -237,6 +264,9 @@ const Dashboard = () => {
       const errorMessage = error.message || 'Failed to create project. Please try again.';
       setGenerationError(errorMessage);
       showError(errorMessage);
+    } finally {
+      setIsGenerating(false);
+      setGenerationProgress('');
     }
   };
 
@@ -305,7 +335,7 @@ const Dashboard = () => {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="card">
+              <div key={stat.label} className={`card ${isGenerating ? 'opacity-75' : ''}`}>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -315,8 +345,14 @@ const Dashboard = () => {
                       {stat.value}
                     </p>
                   </div>
-                  <Icon className={`h-8 w-8 ${stat.color}`} />
+                  <Icon className={`h-8 w-8 ${stat.color} ${isGenerating ? 'animate-pulse' : ''}`} />
                 </div>
+                {isGenerating && stat.label === 'Total Projects' && (
+                  <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
+                    <div className="animate-spin rounded-full h-3 w-3 border-b border-blue-600 mr-1"></div>
+                    Generating new project...
+                  </div>
+                )}
               </div>
             );
           })}
@@ -431,7 +467,7 @@ const Dashboard = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2"
           >
-            <div className="card">
+            <div className={`card relative ${isGenerating ? 'overflow-hidden' : ''}`}>
               <div className="flex items-center space-x-2 mb-6">
                 <Zap className="h-6 w-6 text-primary-600" />
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -442,23 +478,25 @@ const Dashboard = () => {
               {/* Tab Navigation */}
               <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-6">
                 <button
-                  onClick={() => setActiveTab('concept')}
+                  onClick={() => !isGenerating && setActiveTab('concept')}
+                  disabled={isGenerating}
                   className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200 ${
                     activeTab === 'concept'
                       ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
+                  } ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <BookOpen className="h-4 w-4" />
                   <span>Concept</span>
                 </button>
                 <button
-                  onClick={() => setActiveTab('transcript')}
+                  onClick={() => !isGenerating && setActiveTab('transcript')}
+                  disabled={isGenerating}
                   className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200 ${
                     activeTab === 'transcript'
                       ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
+                  } ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <FileText className="h-4 w-4" />
                   <span>Transcript</span>
@@ -475,9 +513,10 @@ const Dashboard = () => {
                     <input
                       type="text"
                       value={concept}
-                      onChange={(e) => setConcept(e.target.value)}
+                      onChange={(e) => !isGenerating && setConcept(e.target.value)}
+                      disabled={isGenerating}
                       placeholder="e.g., Machine Learning, React Hooks, Quantum Computing..."
-                      className="input-field"
+                      className={`input-field ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     />
                   </div>
                 </div>
@@ -489,16 +528,17 @@ const Dashboard = () => {
                     </label>
                     <textarea
                       value={transcript}
-                      onChange={(e) => setTranscript(e.target.value)}
+                      onChange={(e) => !isGenerating && setTranscript(e.target.value)}
+                      disabled={isGenerating}
                       placeholder="Paste your lecture transcript, notes, or any learning material here..."
                       rows={6}
-                      className="input-field resize-none"
+                      className={`input-field resize-none ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     />
                   </div>
                   <FileUpload
                     onFileProcessed={handleFileProcessed}
                     onError={handleFileError}
-                    disabled={aiLoading}
+                    disabled={isGenerating || aiLoading}
                   />
                 </div>
               )}
@@ -527,33 +567,76 @@ const Dashboard = () => {
                 </motion.div>
               )}
 
+              {/* Progress Message */}
+              {isGenerating && generationProgress && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg mb-4"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                    <p className="text-blue-600 dark:text-blue-400 text-sm">
+                      {generationProgress}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
               <div className="space-y-3">
                 <button
                   onClick={handleGenerateProject}
-                  disabled={(!concept.trim() && !transcript.trim()) || aiLoading}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={(!concept.trim() && !transcript.trim()) || isGenerating || aiLoading}
+                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
                 >
-                  {aiLoading ? (
+                  {isGenerating || aiLoading ? (
                     <div className="flex items-center justify-center">
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Generating...
+                      <span>
+                        {isGenerating ? 'Generating Project...' : 'Processing...'}
+                      </span>
                     </div>
                   ) : (
                     <>
-                      <Plus className="h-5 w-5 mr-2" />
+                      <SparklesIcon className="h-5 w-5 mr-2" />
                       Generate Project Ideas
                     </>
+                  )}
+
+                  {/* Loading overlay */}
+                  {isGenerating && (
+                    <div className="absolute inset-0 bg-blue-600 bg-opacity-20 animate-pulse"></div>
                   )}
                 </button>
 
                 {/* Debug button - remove in production */}
                 <button
                   onClick={handleTestProjectQuery}
-                  className="w-full btn-secondary text-sm"
+                  disabled={isGenerating}
+                  className={`w-full btn-secondary text-sm ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   🧪 Test Project Query (Debug)
                 </button>
               </div>
+
+              {/* Loading Overlay */}
+              {isGenerating && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-80 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-10"
+                >
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      Generating Your Project
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {generationProgress || 'Please wait while we create your project...'}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
             </div>
           </motion.div>
 

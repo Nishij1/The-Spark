@@ -546,6 +546,9 @@ const ProjectExecution = () => {
                   inputSource={project.originalInput || project.description}
                   completedSteps={completedSteps}
                   onStepCompletion={handleStepCompletion}
+                  projectId={project.id}
+                  projectDifficulty={project.difficulty || 5}
+                  projectDomain={project.domain || 'coding'}
                 />
               ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 text-center">
