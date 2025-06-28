@@ -13,17 +13,16 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user: currentUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    background: user?.background || '',
-    skillLevel: user?.skillLevel || 'beginner',
-    bio: user?.bio || '',
-    interests: user?.interests || [],
+    name: currentUser?.displayName || '',
+    email: currentUser?.email || '',
+    background: currentUser?.background || '',
+    skillLevel: currentUser?.skillLevel || 'beginner',
+    bio: currentUser?.bio || '',
+    interests: currentUser?.interests || [],
   });
-
   const skillLevels = [
     { value: 'beginner', label: 'Beginner', description: 'Just starting my learning journey' },
     { value: 'intermediate', label: 'Intermediate', description: 'Have some experience and knowledge' },
@@ -37,8 +36,8 @@ const Profile = () => {
   ];
 
   const achievements = [
-    { title: 'First Project', description: 'Completed your first AI-generated project', earned: true },
-    { title: 'Multi-Domain Explorer', description: 'Created projects in 3+ different domains', earned: true },
+    { title: 'First Project', description: 'Completed your first AI-generated project', earned: false },
+    { title: 'Multi-Domain Explorer', description: 'Created projects in 3+ different domains', earned: false },
     { title: 'Consistent Learner', description: 'Generated projects for 7 consecutive days', earned: false },
     { title: 'Advanced Challenger', description: 'Completed 5 advanced-level projects', earned: false },
   ];
@@ -110,7 +109,7 @@ const Profile = () => {
               </div>
               
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
-                {formData.name || 'User'}
+                {currentUser.displayName || 'User'}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {formData.background || 'Student'}

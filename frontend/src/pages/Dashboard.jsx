@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+
 import {
   Plus,
   Zap,
@@ -23,6 +24,7 @@ import ProjectCard from '../components/projects/ProjectCard';
 import { useToast, ToastContainer } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
 import { testProjectQuery } from '../utils/testFirebase';
+import SimpleProjectModal from '../components/projects/SimpleProjectModal';
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
@@ -37,6 +39,9 @@ const Dashboard = () => {
   const [generationError, setGenerationError] = useState(null);
   const [generationSuccess, setGenerationSuccess] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [showProjectModal, setShowProjectModal] = useState(false);
 
   const stats = [
     {
@@ -462,6 +467,10 @@ const Dashboard = () => {
                     <div
                       key={project.id}
                       className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer"
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setShowProjectModal(true);
+                      }}
                     >
                       <h3 className="font-medium text-gray-900 dark:text-white mb-1">
                         {project.name}
@@ -509,6 +518,14 @@ const Dashboard = () => {
 
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <SimpleProjectModal
+          project={selectedProject}
+          isOpen={showProjectModal}
+          onClose={() => {
+            setShowProjectModal(false);
+            setSelectedProject(null);
+          }}
+      />
     </div>
   );
 };
