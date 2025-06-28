@@ -48,7 +48,6 @@ export function useProjects() {
     }
 
     // Set up real-time subscription
-    console.log('🔔 Setting up real-time subscription for projects');
     setLoading(true);
 
     const unsubscribe = projectService.subscribeToUserProjects(
@@ -63,7 +62,6 @@ export function useProjects() {
 
     // Cleanup subscription on unmount
     return () => {
-      console.log('🧹 Cleaning up projects subscription');
       unsubscribe();
     };
   }, [currentUser]);
@@ -80,11 +78,9 @@ export function useProjects() {
     try {
       setError(null);
       const projectId = await projectService.create(currentUser.uid, projectData);
-      console.log('✅ Project created successfully with ID:', projectId);
       // No need to manually refresh - real-time subscription will handle it
       return projectId;
     } catch (err) {
-      console.error('❌ Error in createProject:', err);
       setError(err.message);
       throw err;
     }
