@@ -91,7 +91,13 @@ const Projects = () => {
   };
 
   const handleDeleteProject = async (projectId) => {
-    await deleteProject(projectId);
+    try {
+      await deleteProject(projectId);
+      showSuccess('Project deleted successfully!');
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+      showError('Failed to delete project. Please try again.');
+    }
   };
 
   const handleViewProject = (project) => {
