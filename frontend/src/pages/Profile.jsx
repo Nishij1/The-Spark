@@ -100,7 +100,7 @@ const Profile = () => {
           >
             <div className="card text-center">
               <div className="relative inline-block mb-4">
-                <div className="w-24 h-24 bg-gradient-to-r from-primary-500 to-spark-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                <div className="w-24 h-24 bg-gradient-to-r from-violet-800 to-slate-50 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                   {formData.name.charAt(0) || 'U'}
                 </div>
                 <button className="absolute bottom-0 right-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
