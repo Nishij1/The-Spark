@@ -74,7 +74,10 @@ const Dashboard = () => {
 
   const handleGenerateProject = async () => {
     const input = activeTab === 'concept' ? concept : transcript;
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      showError('Please enter some text to generate a project');
+      return;
+    }
 
     console.log('Starting project generation...', { input, activeTab, currentUser: currentUser?.uid });
 
@@ -87,33 +90,136 @@ const Dashboard = () => {
         throw new Error('You must be logged in to generate projects');
       }
 
-      console.log('Generating structured project...');
+      // Check if Gemini API key is available
+      const hasGeminiKey = import.meta.env.VITE_GEMINI_API_KEY && import.meta.env.VITE_GEMINI_API_KEY !== 'your_gemini_api_key_here';
 
-      // Use the proper API that generates structured projects with steps
-      const generatedProject = await geminiApi.generateProject(
-        input,
-        'intermediate', // Default skill level
-        'coding' // Default domain
-      );
+      if (hasGeminiKey) {
+        console.log('Generating AI-powered project...');
+        try {
+          // Use the proper API that generates structured projects with steps
+          const generatedProject = await geminiApi.generateProject(
+            input,
+            'intermediate', // Default skill level
+            'coding' // Default domain
+          );
 
-      console.log('Structured project generated:', generatedProject);
+          console.log('Structured project generated:', generatedProject);
 
-      // Create a new project with the generated structure
-      const projectData = {
-        ...generatedProject,
-        // Override some fields for consistency
-        name: generatedProject.title || `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
+          // Create a new project with the generated structure
+          const projectData = {
+            ...generatedProject,
+            // Override some fields for consistency
+            name: generatedProject.title || `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
+            status: 'active',
+            tags: ['AI Generated', activeTab === 'concept' ? 'Concept' : 'Transcript'],
+            originalInput: input, // Store the original input
+            type: 'ai_generated',
+            isGenerated: true,
+            generatedAt: new Date(),
+          };
+
+          console.log('Creating project with structured data:', projectData);
+          const projectId = await createProject(projectData);
+          console.log('Project created successfully with ID:', projectId);
+
+          // Clear the input and show success
+          if (activeTab === 'concept') {
+            setConcept('');
+          } else {
+            setTranscript('');
+          }
+
+          setGenerationSuccess(true);
+          setTimeout(() => setGenerationSuccess(false), 3000);
+          showSuccess('Project generated successfully with AI-powered structured steps! Check your projects page.');
+          return;
+        } catch (aiError) {
+          console.warn('AI generation failed, falling back to manual project:', aiError);
+          showError('AI generation failed, creating a basic project instead...');
+        }
+      } else {
+        console.log('No Gemini API key found, creating manual project...');
+      }
+
+      // Fallback: Create a manual project with basic structure
+      console.log('Creating manual project with basic structure...');
+
+      const fallbackProjectData = {
+        title: `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
+        name: `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
+        description: input,
+        domain: 'coding',
+        skillLevel: 'intermediate',
+        difficulty: 5,
+        estimatedTime: '2-4 hours',
+        technology: 'Manual',
         status: 'active',
-        tags: ['AI Generated', activeTab === 'concept' ? 'Concept' : 'Transcript'],
-        originalInput: input, // Store the original input
-        type: 'ai_generated',
-        isGenerated: true,
-        generatedAt: new Date(),
+        tags: ['Manual', activeTab === 'concept' ? 'Concept' : 'Transcript'],
+        originalInput: input,
+        type: 'manual',
+        learningObjectives: [
+          'Understand the project requirements',
+          'Plan and structure the implementation',
+          'Apply problem-solving skills',
+          'Test and refine the solution'
+        ],
+        technologies: ['General'],
+        steps: [
+          {
+            title: 'Project Analysis & Planning',
+            description: 'Analyze the requirements and create a detailed implementation plan',
+            estimatedTime: '30 minutes',
+            learningFocus: 'Project planning and requirement analysis',
+            resources: ['Project description', 'Research materials'],
+            deliverables: ['Project plan', 'Requirements list']
+          },
+          {
+            title: 'Research & Design',
+            description: 'Research best practices and design your solution approach',
+            estimatedTime: '1 hour',
+            learningFocus: 'Research skills and solution design',
+            resources: ['Online documentation', 'Best practices guides'],
+            deliverables: ['Design document', 'Architecture plan']
+          },
+          {
+            title: 'Implementation',
+            description: 'Start implementing your project based on the plan',
+            estimatedTime: '2-3 hours',
+            learningFocus: 'Hands-on development and problem-solving',
+            resources: ['Development tools', 'Documentation'],
+            deliverables: ['Working implementation', 'Code/artifacts']
+          },
+          {
+            title: 'Testing & Refinement',
+            description: 'Test your implementation and make necessary improvements',
+            estimatedTime: '1 hour',
+            learningFocus: 'Testing, debugging, and quality assurance',
+            resources: ['Testing tools', 'Debugging guides'],
+            deliverables: ['Test results', 'Refined solution']
+          },
+          {
+            title: 'Documentation & Reflection',
+            description: 'Document your solution and reflect on the learning experience',
+            estimatedTime: '30 minutes',
+            learningFocus: 'Documentation skills and self-reflection',
+            resources: ['Documentation templates'],
+            deliverables: ['Project documentation', 'Learning reflection']
+          }
+        ],
+        problemSolutionMapping: {
+          originalProblem: input,
+          howProjectSolves: 'This project provides a structured approach to tackle your learning goal through hands-on implementation.',
+          whyThisApproach: 'Breaking down complex problems into manageable steps helps build understanding progressively.',
+          keyConnections: [
+            'Each step builds upon previous knowledge',
+            'Hands-on practice reinforces theoretical concepts',
+            'Reflection helps consolidate learning'
+          ]
+        }
       };
 
-      console.log('Creating project with structured data:', projectData);
-      const projectId = await createProject(projectData);
-      console.log('Project created successfully with ID:', projectId);
+      const projectId = await createProject(fallbackProjectData);
+      console.log('Manual project created successfully with ID:', projectId);
 
       // Clear the input and show success
       if (activeTab === 'concept') {
@@ -124,69 +230,13 @@ const Dashboard = () => {
 
       setGenerationSuccess(true);
       setTimeout(() => setGenerationSuccess(false), 3000);
-      showSuccess('Project generated successfully with structured steps! Check your projects page.');
+      showSuccess('Project created successfully with structured steps! Check your projects page.');
+
     } catch (error) {
-      console.error('Failed to generate project:', error);
-
-      // If AI generation fails, create a basic project with the input
-      try {
-        console.log('AI generation failed, creating basic project...');
-        const fallbackProjectData = {
-          name: `Project: ${input.substring(0, 50)}${input.length > 50 ? '...' : ''}`,
-          description: input,
-          technology: 'Manual',
-          status: 'active',
-          tags: ['Manual', activeTab === 'concept' ? 'Concept' : 'Transcript'],
-          originalInput: input,
-          type: 'manual',
-          steps: [
-            {
-              title: 'Get Started',
-              description: 'Begin working on your project based on the input provided',
-              estimatedTime: '30 minutes',
-              learningFocus: 'Project setup and initial understanding'
-            },
-            {
-              title: 'Research and Plan',
-              description: 'Research the requirements and create a detailed plan',
-              estimatedTime: '1 hour',
-              learningFocus: 'Planning and research skills'
-            },
-            {
-              title: 'Implementation',
-              description: 'Start implementing your project',
-              estimatedTime: '2-4 hours',
-              learningFocus: 'Hands-on development'
-            },
-            {
-              title: 'Testing and Refinement',
-              description: 'Test your implementation and make improvements',
-              estimatedTime: '1 hour',
-              learningFocus: 'Testing and debugging'
-            }
-          ]
-        };
-
-        const projectId = await createProject(fallbackProjectData);
-        console.log('Fallback project created successfully with ID:', projectId);
-
-        // Clear the input and show success
-        if (activeTab === 'concept') {
-          setConcept('');
-        } else {
-          setTranscript('');
-        }
-
-        setGenerationSuccess(true);
-        setTimeout(() => setGenerationSuccess(false), 3000);
-        showSuccess('Project created successfully! AI generation failed, but we created a basic project structure for you.');
-
-      } catch (fallbackError) {
-        console.error('Failed to create fallback project:', fallbackError);
-        const errorMessage = error.message || 'Failed to generate project. Please try again.';
-        setGenerationError(errorMessage);
-        showError(errorMessage);
-      }
+      console.error('Failed to create project:', error);
+      const errorMessage = error.message || 'Failed to create project. Please try again.';
+      setGenerationError(errorMessage);
+      showError(errorMessage);
     }
   };
 
