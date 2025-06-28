@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Navbar from './components/Navbar';
+import TubelightNavbarComplete from './components/ui/TubelightNavbarComplete';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
@@ -26,7 +26,7 @@ function App() {
             <ToastProvider>
               <Router>
             <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-              <Navbar />
+              <TubelightNavbarComplete />
               <motion.main
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
