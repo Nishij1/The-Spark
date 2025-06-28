@@ -102,8 +102,8 @@ export default function FileUpload({ onFileProcessed, onError, disabled = false 
         className={`
           relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-200
           ${isDragOver && !disabled
-            ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-            : 'border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500'
+            ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+            : 'border-gray-300 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
           ${uploadedFile ? 'border-green-300 bg-green-50 dark:bg-green-900/20' : ''}
@@ -120,7 +120,7 @@ export default function FileUpload({ onFileProcessed, onError, disabled = false 
 
         {isProcessing ? (
           <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-3"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-3"></div>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Processing file...
             </p>
@@ -160,7 +160,7 @@ export default function FileUpload({ onFileProcessed, onError, disabled = false 
           <div className="flex flex-col items-center">
             <CloudArrowUpIcon className="h-8 w-8 text-gray-400 mb-3" />
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              <span className="font-medium text-primary-600 dark:text-primary-400">
+              <span className="font-medium text-purple-600 dark:text-purple-400">
                 Click to upload
               </span>{' '}
               or drag and drop

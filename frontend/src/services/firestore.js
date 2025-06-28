@@ -24,6 +24,7 @@ export const COLLECTIONS = {
   SKILL_ASSESSMENTS: 'skillAssessments',
   PROJECT_PROGRESS: 'projectProgress',
   COMMUNITY_PROJECTS: 'communityProjects',
+  STEP_QUIZZES: 'stepQuizzes',
 };
 
 // Project domains and types
@@ -115,6 +116,7 @@ export const projectService = {
           percentComplete: 0,
           timeSpent: 0,
           lastWorkedOn: null,
+          quizScores: {}, // Store quiz scores by step index
         },
 
         // Community features
@@ -431,8 +433,8 @@ export const progressService = {
     }
   },
 
-  // Complete a step
-  async completeStep(projectId, stepIndex, timeSpent = 0) {
+  // Complete a step (with optional quiz requirement)
+  async completeStep(projectId, stepIndex, timeSpent = 0, quizScore = null) {
     try {
       const projectRef = doc(db, COLLECTIONS.PROJECTS, projectId);
       const projectSnap = await getDoc(projectRef);
@@ -445,6 +447,11 @@ export const progressService = {
       const progress = project.progress || {};
       const completedSteps = [...(progress.completedSteps || [])];
 
+      // Check if quiz is required and passed (90% or higher)
+      if (quizScore && quizScore.percentage < 90) {
+        throw new Error('Quiz score must be 90% or higher to complete this step');
+      }
+
       if (!completedSteps.includes(stepIndex)) {
         completedSteps.push(stepIndex);
       }
@@ -452,14 +459,24 @@ export const progressService = {
       const totalSteps = project.steps?.length || 0;
       const percentComplete = totalSteps > 0 ? (completedSteps.length / totalSteps) * 100 : 0;
 
-      await updateDoc(projectRef, {
+      const updateData = {
         'progress.currentStep': Math.max(progress.currentStep || 0, stepIndex + 1),
         'progress.completedSteps': completedSteps,
         'progress.percentComplete': percentComplete,
         'progress.timeSpent': (progress.timeSpent || 0) + timeSpent,
         'progress.lastWorkedOn': serverTimestamp(),
         updatedAt: serverTimestamp(),
-      });
+      };
+
+      // Add quiz score to progress if provided
+      if (quizScore) {
+        updateData[`progress.quizScores.${stepIndex}`] = {
+          ...quizScore,
+          completedAt: serverTimestamp()
+        };
+      }
+
+      await updateDoc(projectRef, updateData);
 
       return { completedSteps, percentComplete };
     } catch (error) {

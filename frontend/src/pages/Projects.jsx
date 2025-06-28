@@ -174,7 +174,7 @@ const Projects = () => {
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl "
+              className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white f rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl "
             >
               <Plus className="h-5 w-5" />
               <span>New Project</span>
@@ -292,7 +292,7 @@ const Projects = () => {
         {/* Projects Grid/List */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
             <p className="text-gray-500 dark:text-gray-400">Loading projects...</p>
           </div>
         ) : (

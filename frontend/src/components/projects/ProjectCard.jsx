@@ -110,8 +110,10 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
+
       onDoubleClick={handleStartProject}
       className="card hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 cursor-pointer group"
+
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
@@ -119,7 +121,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
             {getDomainIcon(project.domain)}
           </span>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-200">
               {project.title || project.name}
             </h3>
             <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
@@ -199,12 +201,12 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       {/* Project Metadata */}
       <div className="flex flex-wrap gap-2 mb-4">
         {project.domain && (
-          <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm rounded-full">
+          <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full">
             {project.domain}
           </span>
         )}
         {project.skillLevel && (
-          <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full">
+          <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full">
             {project.skillLevel}
           </span>
         )}
@@ -240,7 +242,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
 
               return (
                 <li key={idx} className="flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
                   <span>{objectiveText}</span>
                 </li>
               );
@@ -277,7 +279,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
           <div className="text-sm text-gray-600 dark:text-gray-400">
             {project.steps.slice(0, 2).map((step, idx) => (
               <div key={idx} className="flex items-start space-x-2 mb-1">
-                <span className="text-primary-500 font-medium">{idx + 1}.</span>
+                <span className="text-purple-500 font-medium">{idx + 1}.</span>
                 <span>{step.title}</span>
               </div>
             ))}
@@ -309,7 +311,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
           {project.tags.slice(0, 3).map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 text-xs rounded"
+              className="px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 text-xs rounded"
             >
               {tag}
             </span>
@@ -335,7 +337,7 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
           <button
             onClick={handleStartProject}
             disabled={isStarting || isDeleting}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:shadow-md"
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none disabled:shadow-md"
           >
             {isStarting ? (
               <>

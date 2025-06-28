@@ -233,7 +233,7 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-300">Loading profile...</p>
         </div>
       </div>
@@ -267,7 +267,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-purple-100 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
                 {currentUser?.photoURL ? (
                   <img
                     src={currentUser.photoURL}
@@ -279,7 +279,7 @@ const Profile = () => {
                 )}
               </div>
               {isEditing && (
-                <label className="absolute -bottom-2 -right-2 bg-primary-600 hover:bg-primary-700 text-white p-2 rounded-full cursor-pointer transition-colors">
+                <label className="absolute -bottom-2 -right-2 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full cursor-pointer transition-colors">
                   <Camera className="h-4 w-4" />
                   <input
                     type="file"
@@ -321,7 +321,7 @@ const Profile = () => {
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-primary-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                    className="bg-gradient-to-r from-purple-500 to-purple-100 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${profileCompletion}%` }}
                   ></div>
                 </div>
@@ -335,10 +335,10 @@ const Profile = () => {
                   <button
                     onClick={handleSaveProfile}
                     disabled={loading}
-                    className="btn-primary flex items-center space-x-2"
+                    className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white  rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     <Save className="h-4 w-4" />
-                    <span>Save</span>
+                    <span cl>Save</span>
                   </button>
                   <button
                     onClick={() => setIsEditing(false)}
@@ -351,7 +351,7 @@ const Profile = () => {
               ) : (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="btn-primary flex items-center space-x-2"
+                  className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white  rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-90 shadow-lg hover:shadow-xl"
                 >
                   <Edit3 className="h-4 w-4" />
                   <span>Edit Profile</span>
@@ -373,7 +373,7 @@ const Profile = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                       activeTab === tab.id
-                        ? 'border-primary-500 text-primary-600 dark:text-primary-400'
+                        ? 'border-purple-500 text-purple-600 dark:text-purple-400'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
                     }`}
                   >
@@ -403,7 +403,7 @@ const Profile = () => {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                      <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                         {stats?.totalProjects || 0}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -419,7 +419,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                         {formatTime(stats?.totalTimeSpent || 0)}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -571,7 +571,7 @@ const Profile = () => {
                               href={profile.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-primary-600 dark:text-primary-400 hover:underline"
+                              className="text-purple-600 dark:text-purple-400 hover:underline"
                             >
                               {profile.website}
                             </a>
@@ -699,7 +699,7 @@ const Profile = () => {
                               <div className="flex items-center space-x-2">
                                 <div className="w-20 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                                   <div
-                                    className="bg-gradient-to-r from-primary-500 to-purple-500 h-2 rounded-full"
+                                    className="bg-gradient-to-r from-purple-500 to-purple-100 h-2 rounded-full"
                                     style={{
                                       width: `${(skill.count / (stats.favoriteSkills[0]?.count || 1)) * 100}%`
                                     }}
@@ -746,10 +746,10 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                       {getEarnedAchievements().reduce((sum, a) => sum + (a.points || 10), 0)}
                     </div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300">
+                    <div className="text-sm text-purple-700 dark:text-purple-300">
                       Total Points
                     </div>
                   </div>

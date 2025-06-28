@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   PlayCircleIcon,
@@ -9,24 +9,64 @@ import {
   ChatBubbleLeftRightIcon,
   ArrowRightIcon,
   BookOpenIcon,
+  AcademicCapIcon,
 } from '@heroicons/react/24/outline';
+import StepQuiz from '../quiz/StepQuiz';
+import { useAuth } from '../../context/AuthContext';
+import { quizService } from '../../services/quizService';
 
 const ProjectStepsWithContext = ({
   steps,
   inputSource,
   completedSteps: externalCompletedSteps,
   onStepCompletion,
+  projectId,
+  projectDifficulty = 5,
+  projectDomain = 'coding',
   className = ''
 }) => {
+  const { currentUser } = useAuth();
   const [internalCompletedSteps, setInternalCompletedSteps] = useState(new Set());
   const [expandedStep, setExpandedStep] = useState(null);
+  const [showQuiz, setShowQuiz] = useState({});
+  const [quizScores, setQuizScores] = useState({});
 
   // Use external completed steps if provided, otherwise use internal state
   const completedSteps = externalCompletedSteps || internalCompletedSteps;
 
+  // Load existing quiz scores when component mounts
+  useEffect(() => {
+    const loadQuizScores = async () => {
+      if (!currentUser || !projectId || !steps) return;
+
+      const scores = {};
+      for (let i = 0; i < steps.length; i++) {
+        try {
+          const bestScore = await quizService.getBestQuizScore(currentUser.uid, projectId, i);
+          if (bestScore) {
+            scores[i] = bestScore.score;
+          }
+        } catch (error) {
+          console.error(`Error loading quiz score for step ${i}:`, error);
+        }
+      }
+      setQuizScores(scores);
+    };
+
+    loadQuizScores();
+  }, [currentUser, projectId, steps]);
+
   const toggleStepCompletion = (stepIndex) => {
     const isCurrentlyCompleted = completedSteps.has(stepIndex);
     const newCompletionState = !isCurrentlyCompleted;
+
+    // Check if quiz is required and passed
+    const quizScore = quizScores[stepIndex];
+    if (newCompletionState && (!quizScore || !quizScore.passed)) {
+      // Show quiz instead of marking as complete
+      setShowQuiz(prev => ({ ...prev, [stepIndex]: true }));
+      return;
+    }
 
     if (onStepCompletion) {
       // Use external handler if provided
@@ -41,6 +81,34 @@ const ProjectStepsWithContext = ({
       }
       setInternalCompletedSteps(newCompleted);
     }
+  };
+
+  const handleQuizPass = (stepIndex, score) => {
+    console.log('Quiz passed for step', stepIndex, 'with score:', score);
+
+    // Update quiz scores
+    setQuizScores(prev => ({ ...prev, [stepIndex]: score }));
+
+    // Hide quiz
+    setShowQuiz(prev => ({ ...prev, [stepIndex]: false }));
+
+    // Mark step as completed
+    console.log('Marking step as completed...');
+    if (onStepCompletion) {
+      console.log('Using external step completion handler');
+      onStepCompletion(stepIndex, true);
+    } else {
+      console.log('Using internal step completion');
+      const newCompleted = new Set(internalCompletedSteps);
+      newCompleted.add(stepIndex);
+      setInternalCompletedSteps(newCompleted);
+    }
+  };
+
+  const handleQuizComplete = (stepIndex, score) => {
+    console.log('Quiz completed for step', stepIndex, 'with score:', score);
+    // Update quiz scores regardless of pass/fail
+    setQuizScores(prev => ({ ...prev, [stepIndex]: score }));
   };
 
   const toggleStepExpansion = (stepIndex) => {
@@ -346,6 +414,82 @@ const ProjectStepsWithContext = ({
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                {/* Quiz Section */}
+                {!isCompleted && (
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                        <AcademicCapIcon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900 dark:text-white">
+                          Knowledge Check
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Complete this quiz with 90% or higher to mark the step as complete
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Quiz Score Display */}
+                    {quizScores[index] && (
+                      <div className={`mb-4 p-3 rounded-lg ${
+                        quizScores[index].passed
+                          ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                          : 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800'
+                      }`}>
+                        <div className="flex items-center justify-between">
+                          <span className={`text-sm font-medium ${
+                            quizScores[index].passed
+                              ? 'text-green-800 dark:text-green-200'
+                              : 'text-orange-800 dark:text-orange-200'
+                          }`}>
+                            {quizScores[index].passed ? 'Quiz Passed!' : 'Quiz Attempted'}
+                          </span>
+                          <span className={`text-lg font-bold ${
+                            quizScores[index].passed
+                              ? 'text-green-600 dark:text-green-400'
+                              : 'text-orange-600 dark:text-orange-400'
+                          }`}>
+                            {quizScores[index].percentage}%
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Quiz Button or Component */}
+                    {!showQuiz[index] ? (
+                      <button
+                        onClick={() => setShowQuiz(prev => ({ ...prev, [index]: true }))}
+                        className={`w-full p-4 rounded-lg border-2 border-dashed transition-all ${
+                          quizScores[index]?.passed
+                            ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-300'
+                            : 'border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/10 text-purple-700 dark:text-purple-300 hover:border-purple-400 dark:hover:border-purple-600'
+                        }`}
+                      >
+                        <div className="flex items-center justify-center space-x-2">
+                          <AcademicCapIcon className="h-5 w-5" />
+                          <span className="font-medium">
+                            {quizScores[index]?.passed ? 'Retake Quiz' : 'Start Quiz'}
+                          </span>
+                        </div>
+                      </button>
+                    ) : (
+                      <StepQuiz
+                        step={step}
+                        stepIndex={index}
+                        projectId={projectId}
+                        projectDifficulty={projectDifficulty}
+                        projectDomain={projectDomain}
+                        userId={currentUser?.uid}
+                        onQuizComplete={(score) => handleQuizComplete(index, score)}
+                        onQuizPass={(passedStepIndex, score) => handleQuizPass(passedStepIndex, score)}
+                        isVisible={showQuiz[index]}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           );
