@@ -66,21 +66,46 @@ const ProjectStepsWithContext = ({
         </p>
       </div>
 
-      {/* Progress Overview */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Progress</span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {completedSteps.size} of {steps.length} steps completed
-          </span>
+      {/* Enhanced Progress Overview */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">Progress</span>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              {completedSteps.size} of {steps.length} steps completed
+            </p>
+          </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {Math.round((completedSteps.size / steps.length) * 100)}%
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Complete</div>
+          </div>
         </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-3">
           <motion.div
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full"
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${(completedSteps.size / steps.length) * 100}%` }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           />
+        </div>
+
+        {/* Step indicators */}
+        <div className="flex justify-between items-center">
+          {steps.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                completedSteps.has(index)
+                  ? 'bg-green-500 scale-110'
+                  : index === completedSteps.size
+                  ? 'bg-blue-500 scale-110'
+                  : 'bg-gray-300 dark:bg-gray-600'
+              }`}
+            />
+          ))}
         </div>
       </div>
 
@@ -110,36 +135,56 @@ const ProjectStepsWithContext = ({
                 <div className="flex items-start space-x-4">
                   {/* Step Number/Status */}
                   <div className="flex-shrink-0">
-                    <button
+                    <motion.button
                       onClick={() => toggleStepCompletion(index)}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
                         isCompleted
-                          ? 'bg-green-500 text-white'
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-green-200 dark:shadow-green-900/50'
                           : isNext
-                          ? 'bg-indigo-500 text-white'
-                          : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600'
+                          ? 'bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-indigo-200 dark:shadow-indigo-900/50'
+                          : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 shadow-gray-200 dark:shadow-gray-800'
                       }`}
                     >
                       {isCompleted ? (
-                        <CheckCircleIcon className="h-6 w-6" />
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        >
+                          <CheckCircleIcon className="h-7 w-7" />
+                        </motion.div>
                       ) : (
-                        <span className="font-bold">{index + 1}</span>
+                        <span className="font-bold text-lg">{index + 1}</span>
                       )}
-                    </button>
+                    </motion.button>
                   </div>
 
                   {/* Step Content */}
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className={`font-semibold ${
-                        isCompleted
-                          ? 'text-green-800 dark:text-green-200'
-                          : isNext
-                          ? 'text-indigo-800 dark:text-indigo-200'
-                          : 'text-gray-900 dark:text-white'
-                      }`}>
-                        {step.title}
-                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <h3 className={`font-semibold ${
+                          isCompleted
+                            ? 'text-green-800 dark:text-green-200'
+                            : isNext
+                            ? 'text-indigo-800 dark:text-indigo-200'
+                            : 'text-gray-900 dark:text-white'
+                        }`}>
+                          {step.title}
+                        </h3>
+                        {isCompleted && (
+                          <motion.span
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                            className="text-green-500 text-lg"
+                          >
+                            ✅
+                          </motion.span>
+                        )}
+                      </div>
                       <div className="flex items-center space-x-2">
                         {step.estimatedTime && (
                           <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
@@ -147,12 +192,12 @@ const ProjectStepsWithContext = ({
                             <span>{step.estimatedTime}</span>
                           </div>
                         )}
-                        <button
-                          onClick={() => toggleStepExpansion(index)}
-                          className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                        >
-                          <QuestionMarkCircleIcon className="h-5 w-5" />
-                        </button>
+                        {isCompleted && (
+                          <div className="flex items-center space-x-1 text-xs text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
+                            <CheckCircleIcon className="h-3 w-3" />
+                            <span>Done</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -201,6 +246,53 @@ const ProjectStepsWithContext = ({
                         </div>
                       </div>
                     )}
+
+                    {/* Mark as Completed Button */}
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <motion.button
+                          onClick={() => toggleStepCompletion(index)}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                            isCompleted
+                              ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700'
+                              : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
+                          }`}
+                        >
+                          {isCompleted ? (
+                            <>
+                              <CheckCircleIcon className="h-5 w-5" />
+                              <span>Completed ✓</span>
+                            </>
+                          ) : (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white rounded border-dashed"></div>
+                              <span>Mark as Completed</span>
+                            </>
+                          )}
+                        </motion.button>
+
+                        {isCompleted && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex items-center space-x-1 text-green-600 dark:text-green-400 text-sm"
+                          >
+                            <span>🎉</span>
+                            <span>Great job!</span>
+                          </motion.div>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={() => toggleStepExpansion(index)}
+                        className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                      >
+                        <span>{isExpanded ? 'Hide Details' : 'Show Details'}</span>
+                        <QuestionMarkCircleIcon className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
