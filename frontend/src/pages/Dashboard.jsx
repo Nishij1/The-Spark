@@ -113,7 +113,7 @@ const Dashboard = () => {
             status: 'active',
             tags: ['AI Generated', activeTab === 'concept' ? 'Concept' : 'Transcript'],
             originalInput: input, // Store the original input
-            type: 'ai_generated',
+            type: 'generated', // Use correct project type
             isGenerated: true,
             generatedAt: new Date(),
           };
