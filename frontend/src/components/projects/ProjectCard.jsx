@@ -110,9 +110,8 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      onDoubleClick={()=>onView(project)}
-      className="card hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-200 cursor-pointer group"
       onDoubleClick={handleStartProject}
+      onClick={handleCardClick}
       className="card hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 cursor-pointer group"
     >
       <div className="flex items-start justify-between mb-4">
@@ -324,10 +323,10 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
         </div>
       )}
 
-      {/* Click to view indicator */}
+      {/* Click to view/start indicator */}
       <div className="mt-3 text-center">
         <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-200">
-          Double click anywhere to start project 
+          Double click to start, click to view details
         </span>
       </div>
 
