@@ -347,7 +347,7 @@ We welcome contributions! Here's how to get started:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/yourusername/project-spark.git
+   git clone https://github.com/Nishij1/HRX29-Apophis.git
    cd project-spark
    ```
 
@@ -444,6 +444,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for developers and learners everywhere.**
+**Built with ❤️ Team Apophis.**
 
 *Transform your learning journey with AI-powered project generation. Start building, start learning, start sparking!* ✨
