@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ai.zencoder.plugin.chat.index">
+    <option name="chatMetadata" value="{&quot;0dd306fa-1847-4796-b355-36da746c789e&quot;:{&quot;id&quot;:&quot;0dd306fa-1847-4796-b355-36da746c789e&quot;,&quot;title&quot;:&quot;Project Delete Functionality Fix&quot;,&quot;createdAt&quot;:1751129880907,&quot;updatedAt&quot;:1751130273169,&quot;isAgent&quot;:true,&quot;isNameGenerated&quot;:true,&quot;messageCount&quot;:6,&quot;lastMessagePreview&quot;:&quot;Understood! Let me summarize the fixes I've implemented to resolve the intermittent project delete f...&quot;}}" />
+  </component>
+</project>

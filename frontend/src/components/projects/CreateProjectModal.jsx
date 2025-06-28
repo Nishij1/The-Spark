@@ -8,6 +8,8 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
     description: '',
     technology: '',
     tags: '',
+    domain: 'coding',
+    skillLevel: 'intermediate',
   });
 
   const modalRef = useRef();
@@ -37,13 +39,84 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
+
+    // Create a structured project similar to AI-generated ones
     const projectData = {
-      ...formData,
+      title: formData.name,
+      name: formData.name,
+      description: formData.description,
+      domain: formData.domain,
+      skillLevel: formData.skillLevel,
+      difficulty: 5, // Default difficulty
+      estimatedTime: '2-4 hours', // Default estimated time
+      technology: formData.technology || 'General',
+      status: 'active',
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+      type: 'manual',
+      learningObjectives: [
+        'Understand the project requirements',
+        'Apply relevant skills and knowledge',
+        'Complete the project successfully',
+        'Reflect on the learning experience'
+      ],
+      technologies: formData.technology ? [formData.technology] : ['General'],
+      steps: [
+        {
+          title: 'Project Setup & Planning',
+          description: 'Set up your development environment and plan your approach',
+          estimatedTime: '30 minutes',
+          learningFocus: 'Project planning and environment setup',
+          resources: ['Development tools', 'Project requirements'],
+          deliverables: ['Development environment', 'Project plan']
+        },
+        {
+          title: 'Research & Design',
+          description: 'Research the requirements and design your solution',
+          estimatedTime: '1 hour',
+          learningFocus: 'Research skills and solution design',
+          resources: ['Documentation', 'Best practices'],
+          deliverables: ['Design document', 'Implementation plan']
+        },
+        {
+          title: 'Core Implementation',
+          description: 'Implement the main functionality of your project',
+          estimatedTime: '2-3 hours',
+          learningFocus: 'Hands-on development and problem-solving',
+          resources: ['Code examples', 'Documentation'],
+          deliverables: ['Working implementation', 'Core features']
+        },
+        {
+          title: 'Testing & Debugging',
+          description: 'Test your implementation and fix any issues',
+          estimatedTime: '45 minutes',
+          learningFocus: 'Testing and debugging skills',
+          resources: ['Testing tools', 'Debugging guides'],
+          deliverables: ['Test results', 'Bug fixes']
+        },
+        {
+          title: 'Finalization & Documentation',
+          description: 'Finalize your project and create documentation',
+          estimatedTime: '30 minutes',
+          learningFocus: 'Documentation and project completion',
+          resources: ['Documentation templates'],
+          deliverables: ['Final project', 'Documentation']
+        }
+      ],
+      problemSolutionMapping: {
+        originalProblem: formData.description || 'Complete this project to learn new skills',
+        howProjectSolves: 'This project provides hands-on experience with structured learning steps.',
+        whyThisApproach: 'Step-by-step implementation helps build understanding progressively.',
+        keyConnections: [
+          'Each step builds upon previous knowledge',
+          'Practical implementation reinforces learning',
+          'Documentation helps consolidate understanding'
+        ]
+      }
     };
+
     try {
       await onSubmit(projectData);
-      setFormData({ name: '', description: '', technology: '', tags: '' });
+      setFormData({ name: '', description: '', technology: '', tags: '', domain: 'coding', skillLevel: 'intermediate' });
       onClose();
     } catch (error) {
       console.error('Failed to create project:', error);
@@ -66,7 +139,7 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
                   transition={{ duration: 0.2 }}
                   className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 relative"
               >
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                     Create New Project
                   </h3>
@@ -76,6 +149,12 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
                   >
                     <XMarkIcon className="h-6 w-6" />
                   </button>
+                </div>
+
+                <div className="mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    ✨ Your project will be created with structured learning steps, objectives, and resources to guide your learning journey.
+                  </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -120,6 +199,41 @@ export default function CreateProjectModal({ isOpen, onClose, onSubmit, loading 
                         className="input-field"
                         placeholder="e.g., React, Python, Arduino"
                     />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Domain
+                      </label>
+                      <select
+                          name="domain"
+                          value={formData.domain}
+                          onChange={handleChange}
+                          className="input-field"
+                      >
+                        <option value="coding">Coding</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="design">Design</option>
+                        <option value="research">Research</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Skill Level
+                      </label>
+                      <select
+                          name="skillLevel"
+                          value={formData.skillLevel}
+                          onChange={handleChange}
+                          className="input-field"
+                      >
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div>
