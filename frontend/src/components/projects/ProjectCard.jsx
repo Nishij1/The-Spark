@@ -110,9 +110,8 @@ export default function ProjectCard({ project, onEdit, onDelete, onView, onStart
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      onDoubleClick={handleStartProject}
-      onClick={handleCardClick}
-      className="card hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 cursor-pointer group"
+      onDoubleClick={()=>onView(project)}
+      className="card hover:shadow-xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-200 cursor-pointer group"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
