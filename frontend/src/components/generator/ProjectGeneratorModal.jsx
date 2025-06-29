@@ -14,12 +14,76 @@ import { PROJECT_DOMAINS, SKILL_LEVELS } from '../../services/firestore';
 import { geminiApi } from '../../services/geminiApi';
 import ProjectDetailModal from '../project/ProjectDetailModal';
 import { enhanceProjectWithLearningContext } from '../../utils/projectEnhancer';
+import { runFullDiagnostic, formatDiagnosticResults } from '../../utils/debugUtils';
 
 const INPUT_TYPES = {
   CONCEPT: 'concept',
   TRANSCRIPT: 'transcript',
   URL: 'url',
   TOPIC: 'topic',
+};
+
+// Fallback project creation function
+const createFallbackProject = (input, skillLevel, domain) => {
+  const difficultyMap = {
+    [SKILL_LEVELS.BEGINNER]: 3,
+    [SKILL_LEVELS.INTERMEDIATE]: 5,
+    [SKILL_LEVELS.ADVANCED]: 8
+  };
+
+  return {
+    title: `Learn ${input}`,
+    name: `Learn ${input}`,
+    description: `A hands-on project to help you learn and practice ${input}. This project will guide you through the fundamentals and help you build practical skills.`,
+    domain: domain,
+    skillLevel: skillLevel,
+    difficulty: difficultyMap[skillLevel] || 5,
+    estimatedTime: skillLevel === SKILL_LEVELS.BEGINNER ? '2-4 hours' : skillLevel === SKILL_LEVELS.INTERMEDIATE ? '4-8 hours' : '8-16 hours',
+    learningObjectives: [
+      `Understand the core concepts of ${input}`,
+      `Apply ${input} in a practical context`,
+      `Build a working project using ${input}`,
+      `Gain confidence with ${input} fundamentals`
+    ],
+    technologies: [input],
+    steps: [
+      {
+        title: 'Research and Planning',
+        description: `Research the fundamentals of ${input} and plan your learning approach.`,
+        estimatedTime: '30-60 minutes',
+        learningFocus: 'Understanding requirements and planning'
+      },
+      {
+        title: 'Setup and Environment',
+        description: `Set up your development environment and tools needed for ${input}.`,
+        estimatedTime: '30-45 minutes',
+        learningFocus: 'Environment configuration'
+      },
+      {
+        title: 'Core Implementation',
+        description: `Implement the main features and functionality related to ${input}.`,
+        estimatedTime: '2-4 hours',
+        learningFocus: 'Hands-on development'
+      },
+      {
+        title: 'Testing and Refinement',
+        description: `Test your implementation and make improvements.`,
+        estimatedTime: '1-2 hours',
+        learningFocus: 'Quality assurance and optimization'
+      },
+      {
+        title: 'Documentation and Reflection',
+        description: `Document your work and reflect on what you learned.`,
+        estimatedTime: '30 minutes',
+        learningFocus: 'Documentation and self-assessment'
+      }
+    ],
+    type: 'generated',
+    isGenerated: true,
+    generatedAt: new Date(),
+    inputSource: input,
+    isFallback: true
+  };
 };
 
 export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenerated, userSkillLevel }) {
@@ -93,6 +157,13 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
   };
 
   const handleGenerate = async () => {
+    console.log('🚀 Starting project generation...', {
+      inputData: inputData.trim(),
+      selectedDomains,
+      skillLevel,
+      preferences
+    });
+
     if (!inputData.trim()) {
       setError('Please provide input for project generation');
       return;
@@ -103,16 +174,31 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
       return;
     }
 
+    // Check if API key is available
+    const hasApiKey = import.meta.env.VITE_GEMINI_API_KEY &&
+                     import.meta.env.VITE_GEMINI_API_KEY !== 'your_gemini_api_key_here' &&
+                     import.meta.env.VITE_GEMINI_API_KEY !== '';
+
+    if (!hasApiKey) {
+      setError('Gemini API key is not configured. Please check your environment variables.');
+      console.error('❌ Missing or invalid Gemini API key');
+      return;
+    }
+
     setIsGenerating(true);
     setError('');
     setGeneratedProjects([]);
 
     try {
       const projects = [];
-      
+
+      console.log(`📝 Generating projects for ${selectedDomains.length} domain(s)...`);
+
       // Generate projects for each selected domain
       for (const domain of selectedDomains) {
         try {
+          console.log(`🎯 Generating project for domain: ${domain}`);
+
           const rawProject = await geminiApi.generateProject(
             inputData,
             skillLevel,
@@ -120,23 +206,39 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
             preferences
           );
 
+          console.log(`✅ Successfully generated ${domain} project:`, rawProject);
+
           // Enhance project with learning context if needed
           const enhancedProject = enhanceProjectWithLearningContext(rawProject, inputData);
           projects.push(enhancedProject);
+
+          console.log(`🔧 Enhanced project:`, enhancedProject);
         } catch (domainError) {
-          console.warn(`Failed to generate ${domain} project:`, domainError.message);
+          console.error(`❌ Failed to generate ${domain} project:`, domainError);
+          // Add domain-specific error to show user which domains failed
+          setError(prev => prev ? `${prev}\n• ${domain}: ${domainError.message}` : `• ${domain}: ${domainError.message}`);
         }
       }
 
+      console.log(`📊 Generation complete. Generated ${projects.length} projects out of ${selectedDomains.length} domains.`);
+
       if (projects.length === 0) {
-        throw new Error('Failed to generate any projects. Please try again.');
+        console.log('⚠️ No projects generated via AI, creating fallback project...');
+
+        // Create a fallback project if AI generation completely fails
+        const fallbackProject = createFallbackProject(inputData, skillLevel, selectedDomains[0]);
+        projects.push(fallbackProject);
+
+        setError('AI generation failed, but we created a basic project structure for you. You can customize it further.');
       }
 
       setGeneratedProjects(projects);
       setStep(3);
+      console.log('🎉 Project generation successful!');
     } catch (error) {
-      console.error('Error generating projects:', error);
-      setError(error.message || 'Failed to generate projects. Please try again.');
+      console.error('💥 Error in project generation:', error);
+      const errorMessage = error.message || 'Failed to generate projects. Please try again.';
+      setError(errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -418,10 +520,37 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                   </div>
 
                   {error && (
-                    <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
-                      <p className="text-red-700 dark:text-red-400">{error}</p>
+                    <div className={`p-4 border rounded-xl ${
+                      error.includes('✅')
+                        ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                        : error.includes('Running diagnostic')
+                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                        : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                    }`}>
+                      <p className={`text-sm whitespace-pre-line ${
+                        error.includes('✅')
+                          ? 'text-green-700 dark:text-green-400'
+                          : error.includes('Running diagnostic')
+                          ? 'text-blue-700 dark:text-blue-400'
+                          : 'text-red-700 dark:text-red-400'
+                      }`}>
+                        {error}
+                      </p>
                     </div>
                   )}
+
+                  {/* Help Message */}
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                      💡 Troubleshooting Tips
+                    </h4>
+                    <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                      <li>• Click "🏥 Diagnose" to check your setup</li>
+                      <li>• Make sure your Gemini API key is configured</li>
+                      <li>• Check your internet connection</li>
+                      <li>• Try different input text if generation fails</li>
+                    </ul>
+                  </div>
 
                   <div className="flex justify-between">
                     <button
@@ -430,27 +559,51 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                     >
                       Previous
                     </button>
-                    <button
-                      onClick={handleGenerate}
-                      disabled={isGenerating || selectedDomains.length === 0}
-                      className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                        isGenerating || selectedDomains.length === 0
-                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
-                      }`}
-                    >
-                      {isGenerating ? (
-                        <>
-                          <CogIcon className="h-5 w-5 animate-spin" />
-                          <span>Generating Projects...</span>
-                        </>
-                      ) : (
-                        <>
-                          <PlayIcon className="h-5 w-5" />
-                          <span>Generate Projects</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="flex space-x-3">
+                      {/* Diagnostic Button */}
+                      <button
+                        onClick={async () => {
+                          console.log('🏥 Running full diagnostic...');
+                          setError('Running diagnostic...');
+                          try {
+                            const results = await runFullDiagnostic();
+                            const message = formatDiagnosticResults(results);
+                            setError(message);
+
+                            // Also show in alert for immediate visibility
+                            alert(message);
+                          } catch (diagError) {
+                            console.error('❌ Diagnostic failed:', diagError);
+                            setError(`❌ Diagnostic failed: ${diagError.message}`);
+                          }
+                        }}
+                        disabled={isGenerating}
+                        className="px-4 py-3 border border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors text-sm disabled:opacity-50"
+                      >
+                        🏥 Diagnose
+                      </button>
+                      <button
+                        onClick={handleGenerate}
+                        disabled={isGenerating || selectedDomains.length === 0}
+                        className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                          isGenerating || selectedDomains.length === 0
+                            ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                        }`}
+                      >
+                        {isGenerating ? (
+                          <>
+                            <CogIcon className="h-5 w-5 animate-spin" />
+                            <span>Generating Projects...</span>
+                          </>
+                        ) : (
+                          <>
+                            <PlayIcon className="h-5 w-5" />
+                            <span>Generate Projects</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </motion.div>
               )}

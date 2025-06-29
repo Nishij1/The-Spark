@@ -153,42 +153,100 @@ class GeminiApiService {
 
   async generateProject(input, skillLevel = 'intermediate', domain = 'coding', preferences = {}) {
     try {
+      // Check API key
+      if (!import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY === 'your_gemini_api_key_here') {
+        throw new Error('Gemini API key is not configured. Please set VITE_GEMINI_API_KEY in your environment variables.');
+      }
+
       checkRateLimit();
-      
-      console.log('🤖 Generating project with Gemini API...', { input, skillLevel, domain });
-      
+
+      console.log('🤖 Generating project with Gemini API...', { input, skillLevel, domain, preferences });
+
       const prompt = PROMPTS.projectGeneration(input, skillLevel, domain, preferences);
+      console.log('📝 Sending prompt to Gemini:', prompt.substring(0, 200) + '...');
+
       const result = await this.model.generateContent(prompt);
+
+      if (!result) {
+        throw new Error('No response received from Gemini API');
+      }
+
       const response = await result.response;
+
+      if (!response) {
+        throw new Error('Invalid response from Gemini API');
+      }
+
       const text = response.text();
-      
-      console.log('📝 Raw Gemini response:', text);
-      
+
+      if (!text || text.trim() === '') {
+        throw new Error('Empty response from Gemini API');
+      }
+
+      console.log('📝 Raw Gemini response length:', text.length);
+      console.log('📝 Raw Gemini response preview:', text.substring(0, 500) + '...');
+
       // Parse JSON response
       const cleanedText = text.replace(/```json\n?|\n?```/g, '').trim();
-      const projectData = JSON.parse(cleanedText);
-      
+
+      if (!cleanedText) {
+        throw new Error('No valid JSON content found in response');
+      }
+
+      let projectData;
+      try {
+        projectData = JSON.parse(cleanedText);
+      } catch (parseError) {
+        console.error('❌ JSON Parse Error:', parseError);
+        console.error('❌ Cleaned text that failed to parse:', cleanedText);
+        throw new Error(`Failed to parse AI response as JSON: ${parseError.message}`);
+      }
+
+      // Validate required fields
+      if (!projectData.title && !projectData.name) {
+        throw new Error('Generated project is missing title/name');
+      }
+
+      if (!projectData.description) {
+        throw new Error('Generated project is missing description');
+      }
+
       // Add metadata
       projectData.type = 'generated';
       projectData.isGenerated = true;
       projectData.generatedAt = new Date();
       projectData.inputSource = input;
-      
-      console.log('✅ Generated project:', projectData);
+      projectData.name = projectData.title || projectData.name;
+
+      console.log('✅ Successfully generated and validated project:', projectData.title || projectData.name);
       return projectData;
-      
+
     } catch (error) {
       console.error('❌ Error generating project:', error);
-      
-      if (error.message.includes('Rate limit')) {
+
+      // Handle specific error types
+      if (error.message.includes('Rate limit') || error.message.includes('quota')) {
+        throw new Error('API rate limit exceeded. Please wait a moment and try again.');
+      }
+
+      if (error.message.includes('API key')) {
+        throw new Error('Invalid API key. Please check your Gemini API configuration.');
+      }
+
+      if (error.message.includes('JSON') || error.message.includes('parse')) {
+        throw new Error('AI response format error. Please try again with different input.');
+      }
+
+      if (error.message.includes('network') || error.message.includes('fetch')) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      }
+
+      // Re-throw the error if it already has a meaningful message
+      if (error.message && !error.message.includes('Failed to generate project')) {
         throw error;
       }
-      
-      if (error.message.includes('JSON')) {
-        throw new Error('Failed to parse AI response. Please try again.');
-      }
-      
-      throw new Error('Failed to generate project. Please check your internet connection and try again.');
+
+      throw new Error('Failed to generate project. Please try again with different input or check your internet connection.');
     }
   }
 
