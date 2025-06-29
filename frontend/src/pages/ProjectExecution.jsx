@@ -120,7 +120,7 @@ const ProjectExecution = () => {
 
   const handleStepCompletion = async (stepIndex, isCompleted) => {
     const newCompleted = new Set(completedSteps);
-
+    
     if (isCompleted) {
       newCompleted.add(stepIndex);
       if (stepIndex === currentStep) {
@@ -132,16 +132,15 @@ const ProjectExecution = () => {
         setCurrentStep(stepIndex);
       }
     }
-
+    
     setCompletedSteps(newCompleted);
-
+    
     // Save progress to database
     try {
       const currentProgress = project.progress || {};
       const newCurrentStep = stepIndex === currentStep && isCompleted ? currentStep + 1 : currentStep;
       const newProgressPercentage = (newCompleted.size / project.steps.length) * 100;
       const newStatus = newCompleted.size === project.steps.length ? 'completed' : 'in_progress';
-      const isProjectCompleted = newCompleted.size === project.steps.length;
 
       const progressUpdate = {
         progress: {
@@ -155,23 +154,10 @@ const ProjectExecution = () => {
         }
       };
 
-      // If project is completed, also update the main project status
-      if (isProjectCompleted) {
-        progressUpdate.status = 'completed';
-        progressUpdate.completedAt = new Date();
-      }
-
       await updateProject(progressUpdate);
 
       if (isCompleted) {
         showSuccess(`Step ${stepIndex + 1} completed! Great progress!`);
-
-        // Show special completion message if project is fully completed
-        if (isProjectCompleted) {
-          setTimeout(() => {
-            showSuccess('🎉 Congratulations! You have completed the entire project! All steps with quizzes are finished.');
-          }, 1000);
-        }
       }
     } catch (error) {
       console.error('Error saving progress:', error);
@@ -208,7 +194,7 @@ const ProjectExecution = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading your project...</p>
         </div>
       </div>
@@ -230,7 +216,7 @@ const ProjectExecution = () => {
             <div className="space-x-4">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Go to Dashboard
               </button>
@@ -272,7 +258,7 @@ const ProjectExecution = () => {
                   <span>•</span>
                   <span>{project.estimatedTime}</span>
                   <span>•</span>
-                  <span className="text-pur[le-600 dark:text-purple-400 font-medium">
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">
                     {completedSteps.size}/{project.steps.length} steps completed
                   </span>
                   <span>•</span>
@@ -313,7 +299,7 @@ const ProjectExecution = () => {
 
               <button
                 onClick={() => setShowContext(!showContext)}
-                className="flex items-center space-x-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
               >
                 {showContext ? <ChevronUpIcon className="h-4 w-4" /> : <ChevronDownIcon className="h-4 w-4" />}
                 <span>Context</span>
@@ -337,7 +323,7 @@ const ProjectExecution = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/10 dark:to-indigo-900/10 border-b border-purple-200 dark:border-purple-800"
+          className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border-b border-blue-200 dark:border-blue-800"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <LearningProgressTracker
@@ -373,7 +359,7 @@ const ProjectExecution = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? 'border-purple-500 text-purple-600 dark:text-purple-400'
+                    ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                     : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
                 }`}
               >
@@ -404,7 +390,7 @@ const ProjectExecution = () => {
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full">
+                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full">
                       {project.domain}
                     </span>
                     <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm rounded-full">
@@ -416,7 +402,7 @@ const ProjectExecution = () => {
                 {/* Progress Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       {completedSteps.size}
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">Steps Completed</div>
@@ -456,7 +442,7 @@ const ProjectExecution = () => {
                   ) : (
                     <button
                       onClick={() => setActiveTab('steps')}
-                      className="flex items-center space-x-2 px-6 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors shadow-lg"
+                      className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors shadow-lg"
                     >
                       <span>📋</span>
                       <span>Continue Working</span>
@@ -502,7 +488,7 @@ const ProjectExecution = () => {
                     {project.technologies.map((tech, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full"
+                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full"
                       >
                         {tech}
                       </span>
@@ -576,7 +562,7 @@ const ProjectExecution = () => {
                   <div className="flex justify-center space-x-4">
                     <button
                       onClick={() => setActiveTab('context')}
-                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       View Context
                     </button>

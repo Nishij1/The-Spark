@@ -11,7 +11,6 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import QuizDebug from './pages/QuizDebug';
-import ProjectCompletionDebug from './pages/ProjectCompletionDebug';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { UserJourneyProvider } from './context/UserJourneyContext';
@@ -84,14 +83,6 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <QuizDebug />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/completion-debug"
-                  element={
-                    <ProtectedRoute>
-                      <ProjectCompletionDebug />
                     </ProtectedRoute>
                   }
                 />

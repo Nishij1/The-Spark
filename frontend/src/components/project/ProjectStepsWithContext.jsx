@@ -102,12 +102,6 @@ const ProjectStepsWithContext = ({
       const newCompleted = new Set(internalCompletedSteps);
       newCompleted.add(stepIndex);
       setInternalCompletedSteps(newCompleted);
-
-      // Check if all steps are completed for project completion
-      const totalSteps = steps?.length || 0;
-      if (newCompleted.size === totalSteps && totalSteps > 0) {
-        console.log('🎉 All steps completed! Project should be marked as completed.');
-      }
     }
   };
 

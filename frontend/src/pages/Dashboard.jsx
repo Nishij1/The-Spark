@@ -308,7 +308,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
         <motion.div
@@ -406,10 +406,10 @@ const Dashboard = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-8"
         >
-          <div className="card" bg-gradient-to-r from-purple-500 to-purple-100>
+          <div className="card">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-gradient-to-r from-purple-500 to-purple-100 rounded-lg">
+                <div className="p-2 bg-gradient-to-r from-primary-500 to-spark-500 rounded-lg">
                   <SparklesIcon className="h-6 w-6 text-white" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -490,12 +490,13 @@ const Dashboard = () => {
                   <span>Concept</span>
                 </button>
                 <button
-                  onClick={() => setActiveTab('transcript')}
+                  onClick={() => !isGenerating && setActiveTab('transcript')}
+                  disabled={isGenerating}
                   className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md text-sm font-medium transition-colors duration-200 ${
                     activeTab === 'transcript'
                       ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                  }`}
+                  } ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <FileText className="h-4 w-4" />
                   <span>Transcript</span>
@@ -512,9 +513,10 @@ const Dashboard = () => {
                     <input
                       type="text"
                       value={concept}
-                      onChange={(e) => setConcept(e.target.value)}
+                      onChange={(e) => !isGenerating && setConcept(e.target.value)}
+                      disabled={isGenerating}
                       placeholder="e.g., Machine Learning, React Hooks, Quantum Computing..."
-                      className="input-field"
+                      className={`input-field ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     />
                   </div>
                 </div>
@@ -526,16 +528,17 @@ const Dashboard = () => {
                     </label>
                     <textarea
                       value={transcript}
-                      onChange={(e) => setTranscript(e.target.value)}
+                      onChange={(e) => !isGenerating && setTranscript(e.target.value)}
+                      disabled={isGenerating}
                       placeholder="Paste your lecture transcript, notes, or any learning material here..."
                       rows={6}
-                      className="input-field resize-none"
+                      className={`input-field resize-none ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     />
                   </div>
                   <FileUpload
                     onFileProcessed={handleFileProcessed}
                     onError={handleFileError}
-                    disabled={aiLoading}
+                    disabled={isGenerating || aiLoading}
                   />
                 </div>
               )}
@@ -564,27 +567,76 @@ const Dashboard = () => {
                 </motion.div>
               )}
 
+              {/* Progress Message */}
+              {isGenerating && generationProgress && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg mb-4"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                    <p className="text-blue-600 dark:text-blue-400 text-sm">
+                      {generationProgress}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
               <div className="space-y-3">
                 <button
                   onClick={handleGenerateProject}
-                  disabled={(!concept.trim() && !transcript.trim()) || aiLoading}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={(!concept.trim() && !transcript.trim()) || isGenerating || aiLoading}
+                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
                 >
-                  {aiLoading ? (
+                  {isGenerating || aiLoading ? (
                     <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white "></div>
-                      Generating...
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      <span>
+                        {isGenerating ? 'Generating Project...' : 'Processing...'}
+                      </span>
                     </div>
                   ) : (
-                    <div className='mt-2 '>
-                      Generate Project Idea
-                    </div>
+                    <>
+                      <SparklesIcon className="h-5 w-5 mr-2" />
+                      Generate Project Ideas
+                    </>
+                  )}
+
+                  {/* Loading overlay */}
+                  {isGenerating && (
+                    <div className="absolute inset-0 bg-blue-600 bg-opacity-20 animate-pulse"></div>
                   )}
                 </button>
 
-
-          
+                {/* Debug button - remove in production */}
+                <button
+                  onClick={handleTestProjectQuery}
+                  disabled={isGenerating}
+                  className={`w-full btn-secondary text-sm ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  🧪 Test Project Query (Debug)
+                </button>
               </div>
+
+              {/* Loading Overlay */}
+              {isGenerating && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-80 dark:bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-10"
+                >
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      Generating Your Project
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {generationProgress || 'Please wait while we create your project...'}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
             </div>
           </motion.div>
 
