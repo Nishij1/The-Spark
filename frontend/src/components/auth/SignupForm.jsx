@@ -245,7 +245,7 @@ export default function SignupForm() {
           Already have an account?{' '}
           <Link
             to="/login"
-            className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
+            className="font-medium text-purple-600 hover:text-purple-500 dark:text-purple-400"
           >
             Sign in
           </Link>

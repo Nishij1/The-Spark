@@ -174,7 +174,7 @@ const Projects = () => {
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="btn-primary flex items-center space-x-2"
+              className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white f rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl "
             >
               <Plus className="h-5 w-5" />
               <span>New Project</span>
@@ -338,7 +338,7 @@ const Projects = () => {
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               {projects.length === 0 ? 'No projects yet' : 'No projects found'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-400 ">
               {projects.length === 0
                 ? 'Create your first project to get started'
                 : 'Try adjusting your search terms or filters'
@@ -347,9 +347,9 @@ const Projects = () => {
             {projects.length === 0 && (
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="btn-primary mt-4"
+                className="btn-primary mt-4  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                <Plus className="h-5 w-5 mr-2" />
+                
                 Create Your First Project
               </button>
             )}

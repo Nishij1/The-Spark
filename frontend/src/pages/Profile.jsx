@@ -335,10 +335,10 @@ const Profile = () => {
                   <button
                     onClick={handleSaveProfile}
                     disabled={loading}
-                    className="btn-primary flex items-center space-x-2"
+                    className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white  rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     <Save className="h-4 w-4" />
-                    <span>Save</span>
+                    <span cl>Save</span>
                   </button>
                   <button
                     onClick={() => setIsEditing(false)}
@@ -351,7 +351,7 @@ const Profile = () => {
               ) : (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="btn-primary flex items-center space-x-2"
+                  className="btn-primary flex items-center space-x-2  bg-gradient-to-r from-violet-800 to-purple-300 hover:from-purple-900 hover:to-purple-300 text-white  rounded-xl text-lg font-semibold transition-all duration-200 hover:scale-90 shadow-lg hover:shadow-xl"
                 >
                   <Edit3 className="h-4 w-4" />
                   <span>Edit Profile</span>

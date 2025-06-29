@@ -308,7 +308,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
         <motion.div
@@ -406,10 +406,10 @@ const Dashboard = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-8"
         >
-          <div className="card" bg-gradient-to-r from-purple-500 to-purple-100>
+          <div className="card">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-gradient-to-r from-purple-500 to-purple-100 rounded-lg">
+                <div className="p-2 bg-gradient-to-r from-primary-500 to-spark-500 rounded-lg">
                   <SparklesIcon className="h-6 w-6 text-white" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
