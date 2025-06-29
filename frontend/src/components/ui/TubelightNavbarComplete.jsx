@@ -148,7 +148,7 @@ const TubelightNavbarComplete = ({ className }) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-800/20 transition-colors duration-200"
+                  className="hidden sm:block p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-800/20 transition-colors duration-200"
                 >
                   {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </motion.button>
@@ -176,25 +176,52 @@ const TubelightNavbarComplete = ({ className }) => {
                 )}
 
                 {/* Mobile menu button */}
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  animate={{
+                    backgroundColor: isOpen ? 'rgba(147, 51, 234, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                    borderColor: isOpen ? 'rgba(147, 51, 234, 0.3)' : 'rgba(255, 255, 255, 0.2)'
+                  }}
                   onClick={() => setIsOpen(!isOpen)}
-                  className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-800/20 transition-colors duration-200"
+                  className={cn(
+                    "md:hidden p-3 rounded-xl backdrop-blur-sm transition-all duration-200 shadow-lg",
+                    isOpen
+                      ? "bg-purple-500/20 dark:bg-purple-400/20 border-purple-300/50 dark:border-purple-600/50 text-purple-700 dark:text-purple-300"
+                      : "bg-white/10 dark:bg-gray-800/50 border-white/20 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-700/70"
+                  )}
                 >
-                  {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </button>
+                  <motion.div
+                    animate={{ rotate: isOpen ? 90 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                  </motion.div>
+                </motion.button>
               </div>
             </div>
           </div>
 
           {/* Mobile menu */}
           {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="md:hidden border-t border-gray-200/30 dark:border-gray-700/30"
-            >
-              <div className="px-4 py-2 space-y-1">
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsOpen(false)}
+                className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-40 md:hidden"
+              />
+
+              {/* Menu content */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="relative z-50 md:hidden border-t border-gray-200/30 dark:border-gray-700/30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl"
+              >
+              <div className="px-4 py-4 space-y-2">
                 {navigation.map((item) => {
                   const Icon = item.icon
                   const isActive = activeTab === item.name
@@ -208,19 +235,59 @@ const TubelightNavbarComplete = ({ className }) => {
                         setActiveTab(item.name)
                       }}
                       className={cn(
-                        "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+                        "flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 shadow-sm",
                         isActive
-                          ? "bg-primary-100/30 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-gray-800/20"
+                          ? "bg-gradient-to-r from-purple-500/20 to-violet-500/20 dark:from-purple-400/20 dark:to-violet-400/20 text-purple-700 dark:text-purple-300 border border-purple-200/50 dark:border-purple-700/50"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-gray-100/80 hover:to-gray-200/80 dark:hover:from-gray-800/80 dark:hover:to-gray-700/80 border border-transparent hover:border-gray-200/50 dark:hover:border-gray-700/50"
                       )}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-5 w-5" />
                       <span>{item.name}</span>
                     </Link>
                   )
                 })}
+
+                {/* Mobile-only actions */}
+                <div className="pt-4 mt-4 border-t border-gray-200/30 dark:border-gray-700/30 space-y-2">
+                  {/* Theme toggle for mobile */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={toggleTheme}
+                    className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 shadow-sm text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-gray-100/80 hover:to-gray-200/80 dark:hover:from-gray-800/80 dark:hover:to-gray-700/80 border border-transparent hover:border-gray-200/50 dark:hover:border-gray-700/50"
+                  >
+                    {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                    <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+                  </motion.button>
+
+                  {/* Auth button for mobile */}
+                  {isAuthenticated ? (
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        logout()
+                        setIsOpen(false)
+                      }}
+                      className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 shadow-sm text-red-600 dark:text-red-400 hover:bg-gradient-to-r hover:from-red-50/80 hover:to-red-100/80 dark:hover:from-red-900/20 dark:hover:to-red-800/20 border border-transparent hover:border-red-200/50 dark:hover:border-red-700/50"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span>Logout</span>
+                    </motion.button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 shadow-sm bg-gradient-to-r from-purple-500/20 to-violet-500/20 dark:from-purple-400/20 dark:to-violet-400/20 text-purple-700 dark:text-purple-300 border border-purple-200/50 dark:border-purple-700/50"
+                    >
+                      <LogIn className="h-5 w-5" />
+                      <span>Login</span>
+                    </Link>
+                  )}
+                </div>
               </div>
             </motion.div>
+            </>
           )}
         </motion.nav>
       )}
