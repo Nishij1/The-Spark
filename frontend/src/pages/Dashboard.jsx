@@ -308,7 +308,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Welcome Section */}
         <motion.div
@@ -348,8 +348,8 @@ const Dashboard = () => {
                   <Icon className={`h-8 w-8 ${stat.color} ${isGenerating ? 'animate-pulse' : ''}`} />
                 </div>
                 {isGenerating && stat.label === 'Total Projects' && (
-                  <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
-                    <div className="animate-spin rounded-full h-3 w-3 border-b border-blue-600 mr-1"></div>
+                  <div className="mt-2 text-xs text-purple-600 dark:text-purple-400 flex items-center">
+                    <div className="animate-spin rounded-full h-3 w-3 border-b border-purple-600 mr-1"></div>
                     Generating new project...
                   </div>
                 )}
@@ -409,7 +409,7 @@ const Dashboard = () => {
           <div className="card">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-gradient-to-r from-primary-500 to-spark-500 rounded-lg">
+                <div className="p-2 bg-gradient-to-r from-purple-500 to-purple-100 rounded-lg">
                   <SparklesIcon className="h-6 w-6 text-white" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -424,7 +424,7 @@ const Dashboard = () => {
                 className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-center space-x-3">
-                  <CodeBracketIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  <CodeBracketIcon className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900 dark:text-white">Code Generator</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">Generate code with AI assistance</p>
@@ -605,7 +605,7 @@ const Dashboard = () => {
 
                   {/* Loading overlay */}
                   {isGenerating && (
-                    <div className="absolute inset-0 bg-blue-600 bg-opacity-20 animate-pulse"></div>
+                    <div className="absolute inset-0 bg-purple-600 bg-opacity-20 animate-pulse"></div>
                   )}
                 </button>
 
