@@ -129,7 +129,7 @@ export default function LoginForm() {
           <div className="flex items-center justify-between">
             <Link
               to="/forgot-password"
-              className="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400"
+              className="text-sm text-urple-600 hover:text-urple-500 dark:text-urple-400"
             >
               Forgot your password?
             </Link>
@@ -191,7 +191,7 @@ export default function LoginForm() {
           Don't have an account?{' '}
           <Link
             to="/signup"
-            className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400"
+            className="font-medium text-purple-600 hover:text-purple-500 dark:text-purple-400"
           >
             Sign up
           </Link>

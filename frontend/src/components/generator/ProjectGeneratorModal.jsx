@@ -207,7 +207,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
           className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
         >
           {/* Header */}
-          <div className="relative bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 px-8 py-6">
+          <div className="relative bg-gradient-to-br from-purple-500  to-purple-200 px-8 py-6">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -233,7 +233,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                 <div key={stepNum} className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                     step >= stepNum 
-                      ? 'bg-white text-primary-600' 
+                      ? 'bg-white text-purple-600' 
                       : 'bg-white/20 text-white/60'
                   }`}>
                     {stepNum}
@@ -274,12 +274,12 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                             onClick={() => setInputType(option.type)}
                             className={`p-4 text-left rounded-xl border-2 transition-all duration-200 ${
                               inputType === option.type
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                                ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                                 : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-300'
                             }`}
                           >
                             <div className="flex items-start space-x-3">
-                              <Icon className="h-6 w-6 text-primary-500 mt-1" />
+                              <Icon className="h-6 w-6 text-purple-500 mt-1" />
                               <div>
                                 <h3 className="font-medium text-gray-900 dark:text-white">
                                   {option.title}
@@ -316,7 +316,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                       className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
                         !inputData.trim()
                           ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                          : 'bg-gradient-to-r from-purple-300 to-purple-600 hover:from-purple-600 hover:to-purple-400 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                       }`}
                     >
                       Next: Configure Settings
@@ -349,8 +349,8 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                           onClick={() => handleDomainToggle(domain.value)}
                           className={`p-4 rounded-xl border-2 transition-all duration-200 ${
                             selectedDomains.includes(domain.value)
-                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                              : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-300'
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                              : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-purple-300'
                           }`}
                         >
                           <div className="text-center">
@@ -400,7 +400,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                           onClick={() => setPreferences(prev => ({ ...prev, timeCommitment: option.value }))}
                           className={`p-3 rounded-xl border-2 transition-all duration-200 ${
                             preferences.timeCommitment === option.value
-                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                              ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
                               : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-300'
                           }`}
                         >
@@ -436,7 +436,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                       className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
                         isGenerating || selectedDomains.length === 0
                           ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                          : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                       }`}
                     >
                       {isGenerating ? (
@@ -490,7 +490,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                         <button
                           onClick={handleRetryGeneration}
                           disabled={isGenerating}
-                          className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-xl transition-all duration-200 disabled:opacity-50"
+                          className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 disabled:opacity-50"
                         >
                           {isGenerating ? 'Retrying...' : 'Try Again'}
                         </button>
@@ -571,7 +571,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
 
                                       return (
                                         <li key={idx} className="flex items-center space-x-2">
-                                          <span className="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                                          <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
                                           <span>{objectiveText}</span>
                                         </li>
                                       );
@@ -608,7 +608,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                                   <div className="text-sm text-gray-600 dark:text-gray-400">
                                     {project.steps.slice(0, 2).map((step, idx) => (
                                       <div key={idx} className="flex items-start space-x-2 mb-1">
-                                        <span className="text-primary-500 font-medium">{idx + 1}.</span>
+                                        <span className="text-purple-500 font-medium">{idx + 1}.</span>
                                         <span>{step.title}</span>
                                       </div>
                                     ))}
@@ -633,7 +633,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                               </button>
                               <button
                                 onClick={() => handleViewDetails(project)}
-                                className="flex items-center space-x-2 px-4 py-2 text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                                className="flex items-center space-x-2 px-4 py-2 text-sm bg-urple-100 dark:bg-urple-900/30 text-urple-700 dark:text-urple-300 rounded-lg hover:bg-urple-200 dark:hover:bg-urple-900/50 transition-colors"
                               >
                                 <EyeIcon className="h-4 w-4" />
                                 <span>View Details</span>
@@ -641,7 +641,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                             </div>
                             <button
                               onClick={() => handleSelectProject(project)}
-                              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                             >
                               Start This Project
                             </button>
