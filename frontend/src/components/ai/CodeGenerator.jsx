@@ -73,7 +73,7 @@ export default function CodeGenerator() {
         className="card"
       >
         <div className="flex items-center space-x-3 mb-6">
-          <div className="p-2 bg-gradient-to-r from-primary-500 to-spark-500 rounded-lg">
+          <div className="p-2 bg-gradient-to-r from-purple-500 to-white rounded-lg">
             <SparklesIcon className="h-6 w-6 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
