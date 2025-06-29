@@ -406,7 +406,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                         onChange={(e) => setInputData(e.target.value)}
                         placeholder={inputTypeOptions.find(opt => opt.type === inputType)?.placeholder}
                         rows={inputType === INPUT_TYPES.TRANSCRIPT ? 8 : 4}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                       />
                     </div>
                   </div>
@@ -540,11 +540,11 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                   )}
 
                   {/* Help Message */}
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                  <div className="p-4 bg-blue-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
+                    <h4 className="font-medium text-purple-900 dark:text-purple-100 mb-2">
                       💡 Troubleshooting Tips
                     </h4>
-                    <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                    <ul className="text-sm text-purple-700 dark:text-purple-300 space-y-1">
                       <li>• Click "🏥 Diagnose" to check your setup</li>
                       <li>• Make sure your Gemini API key is configured</li>
                       <li>• Check your internet connection</li>
@@ -588,7 +588,7 @@ export default function ProjectGeneratorModal({ isOpen, onClose, onProjectGenera
                         className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
                           isGenerating || selectedDomains.length === 0
                             ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                            : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                         }`}
                       >
                         {isGenerating ? (
